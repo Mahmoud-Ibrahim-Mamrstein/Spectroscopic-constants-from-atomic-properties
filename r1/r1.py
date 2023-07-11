@@ -21,11 +21,11 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 class MyGPR(GaussianProcessRegressor): #MyGPR(GaussianProcessRegressor) class specify the maximum number of iterations, tolerance, and optimizer explicitly in the sklearn.gaussian_process GaussianProcessRegressor object 
     def __init__(self, *args, max_iter=1000000, gtol=1e-6, **kwargs):
         super().__init__(*args, **kwargs)
-        self._max_iter = max_iter
-        self._gtol = gtol
+        self._max_iter = max_iter #maximum number of iterations
+        self._gtol = gtol #tolerance
 
-    def _constrained_optimization(self, obj_func, initial_theta, bounds):
-        if self.optimizer == "fmin_l_bfgs_b":
+    def _constrained_optimization(self, obj_func, initial_theta, bounds): 
+        if self.optimizer == "fmin_l_bfgs_b": #optmizer 
             opt_res = scipy.optimize.minimize(obj_func, initial_theta, method="L-BFGS-B", jac=True, bounds=bounds,tol=self._gtol, options={'maxiter':self._max_iter, 'disp':True})
             #_check_optimize_result("lbfgs", opt_res)
             theta_opt, func_min = opt_res.x, opt_res.fun
@@ -35,9 +35,9 @@ class MyGPR(GaussianProcessRegressor): #MyGPR(GaussianProcessRegressor) class sp
             raise ValueError("Unknown optimizer %s." % self.optimizer)
             
         return theta_opt, func_min
-def load(handel,old_handel): #Load is a function that takes the handles of the two CSV files containing the full data set and the data set  containing the data from Liu et al. 2021 and returns pandas data frames of the data
+def load(handel,old_handel): #Load is a function that takes the handles of the two CSV files containing the full data set (including old and new data) and the data set containing the data from Liu et al. 2021 and returns multiple pandas data frames of the data as defined below
     dfe=pd.read_csv(handel,index_col=None)
-    df1=pd.read_csv(r"/gpfs/home/maaibrahim/gpr/peridic.csv",index_col=None)
+    df1=pd.read_csv(r"/gpfs/home/maaibrahim/gpr/peridic.csv",index_col=None) #Includes information from the periodic table for each element
     dfe= dfe.loc[:, ~dfe.columns.str.contains('^Unnamed')]
     nul=[np.NaN]*len(dfe.Molecule)
     for char in ['e1','e2']: #creating two columns that take in the number of electrons of the elements compromising the diatomic molecules
@@ -59,7 +59,7 @@ def load(handel,old_handel): #Load is a function that takes the handles of the t
     g.loc[g.atom1=='H','p1']=[1]*len(g.loc[g.atom1=='H']['p1'])
     g.loc[g.atom2=='H','g2_lan_act']=[1]*len(g.loc[g.atom2=='H']['g2_lan_act'])
     g.loc[g.atom1=='H','g1_lan_act']=[1]*len(g.loc[g.atom1=='H']['g1_lan_act'])
-    
+    #the 'lan_act' extension to 'g1' and 'g2' indicates that Lanthanides and Actinides are included and both are indicated by group number 3.
     
     
     g.loc[g.atom2=='D','p2']=[1]*len(g.loc[g.atom2=='D']['p2'])
@@ -70,7 +70,7 @@ def load(handel,old_handel): #Load is a function that takes the handles of the t
     g.loc[g.atom1=='D','g1']=[1]*len(g.loc[g.atom1=='D']['g1'])
     g.loc[g.atom2=='T','g2']=[1]*len(g.loc[g.atom2=='T']['g2'])
     g.loc[g.atom1=='T','g1']=[1]*len(g.loc[g.atom1=='T']['g1'])
-    g.loc[g.atom2=='D','g2_lan_act']=[1]*len(g.loc[g.atom2=='D']['g2_lan_act'])
+    g.loc[g.atom2=='D','g2_lan_act']=[1]*len(g.loc[g.atom2=='D']['g2_lan_act'])  
     g.loc[g.atom1=='D','g1_lan_act']=[1]*len(g.loc[g.atom1=='D']['g1_lan_act'])
     g.loc[g.atom2=='T','g2_lan_act']=[1]*len(g.loc[g.atom2=='T']['g2_lan_act'])
     g.loc[g.atom1=='T','g1_lan_act']=[1]*len(g.loc[g.atom1=='T']['g1_lan_act'])
@@ -93,7 +93,7 @@ def load(handel,old_handel): #Load is a function that takes the handles of the t
     g['g_average_lan_act']=(g.g1_lan_act+g.g2_lan_act)/2
     g['g_average_lan_act_iso']=(g.g1_lan_act_iso+g.g2_lan_act_iso)/2
     g['Re (\AA)^-1']=1/((g['Re (\AA)']))
-    g['Re (au)']=((g['Re (\AA)'])*1.8897259885789)
+    g['Re (au)']=((g['Re (\AA)'])*1.8897259885789) #unit conversion
     g['Re (au)^-1']=1/((g['Re (\AA)'])*1.8897259885789)
     g['Re (au)^2']=((g['Re (\AA)'])*1.8897259885789)**2
     g['Re (au)^-2']=1/g['Re (au)^2']
@@ -101,17 +101,18 @@ def load(handel,old_handel): #Load is a function that takes the handles of the t
     g['4*(np.pi**2)*Re (au)^-1']=1/(4*(np.pi**2)*(g['Re (\AA)'])*1.8897259885789)
     g['omega_e (au)^-2']=1/((g['omega_e (cm^{-1})']*0.0000046)**2)
     g['4*(np.pi**2)*omega_e (au)^-2']=1/((2*(np.pi)*g['omega_e (cm^{-1})']*0.0000046)**2)
-    g['omega_e (au)']=(g['omega_e (cm^{-1})']*(0.0000046))
+    g['omega_e (au)']=(g['omega_e (cm^{-1})']*(0.0000046)) #unit conversion
     g['omega_e (au)^2']=((g['omega_e (cm^{-1})']*0.0000046)**2)
     g['4*(np.pi**2)*omega_e (au)^2']=4*(np.pi**2)*((g['omega_e (cm^{-1})']*(0.0000046))**2)
-    g['K']=(4*(np.pi**2)*((g['omega_e (cm^{-1})'])**2)*g['Reduced mass'])
+    g['K']=(4*(np.pi**2)*((g['omega_e (cm^{-1})'])**2)*g['Reduced mass']) # 'K' indicates the force constant 
     g['sqrt(K)']=np.sqrt(4*(np.pi**2)*((g['omega_e (cm^{-1})'])**2)*g['Reduced mass'])
     g['4*(np.pi**2)*omega_e (au)']=4*(np.pi**2)*((g['omega_e (cm^{-1})']*(0.0000046)))
     g['4*(np.pi**2)*Re (au)*omega_e (au)^2']=g['4*(np.pi**2)*Re (au)']*((g['omega_e (cm^{-1})']*0.0000046)**2)
-    g['ve1']=g['g1_lan_act']
-    g['ve2']=g['g2_lan_act']
+    g['ve1']=g['g1_lan_act'] #indicating valence electrons of element 1
+    g['ve2']=g['g2_lan_act'] #indicating valence electrons of element 2
     g['log(D_e)/(R_e^3*Z_1*Z_2)']=np.log((g["D0 (eV)"]*0.037)/((g["Re (au)"]**3)*g.e1*g.e2))
-    g.loc[g.g2_lan_act==18,'ve2']=[0]*len(g.loc[g.g2_lan_act==18]['g2_lan_act'])
+    #redfinining valence electrons 
+    g.loc[g.g2_lan_act==18,'ve2']=[0]*len(g.loc[g.g2_lan_act==18]['g2_lan_act']) 
     g.loc[g.g1_lan_act==18,'ve1']=[0]*len(g.loc[g.g1_lan_act==18]['g1_lan_act'])
     g.loc[g.g2_lan_act==17,'ve2']=[7]*len(g.loc[g.g2_lan_act==17]['g2_lan_act'])
     g.loc[g.g1_lan_act==17,'ve1']=[7]*len(g.loc[g.g1_lan_act==17]['g1_lan_act'])
@@ -139,6 +140,7 @@ def load(handel,old_handel): #Load is a function that takes the handles of the t
     gw_old=gr_old[gr_old["omega_e (cm^{-1})"].isna()==False] #gw_old only contains molecules that have R_e and omega_e available from liu et al., 2021
     gr_new=g_new[g_new["Re (\AA)"].isna()==False] #gr_new only contains new molecules that have R_e available
     gw_new=gr_new[gr_new["omega_e (cm^{-1})"].isna()==False] #gw_new only contains new molecules that have R_e and omega_e available
+    
     # permuting the properties of atoms 1 and 2 in the diatomic molecules as described in Liu et al., 2021 and in the manuscript, to create expanded data frames containing both A-B and B-A molecules
     reverse=['A1','A2','g1','g2','p1','p2','g1iso','g2iso','g1_lan_act','g2_lan_act','g1_lan_act_iso','g2_lan_act_iso','atom1','atom2','type1','type2','e1','e2','ve1','ve2']
     for key,value in g_dict.items():
@@ -156,6 +158,7 @@ def load(handel,old_handel): #Load is a function that takes the handles of the t
             g_dict[reverse[s]]=A
             g_dict[reverse[s+1]]=B
             s=s+2
+    #the extension '-expand' indicates the inclusion of both A-B and B-A variations of the diatomic molecule in the dataframe 
     g_expand=pd.DataFrame.from_dict(g_dict, orient='columns')
     g_expand.drop_duplicates(subset=['A1','A2','g1','g2','p1','p2','g1iso','g2iso','g1_lan_act','g2_lan_act','g1_lan_act_iso','g2_lan_act_iso','atom1','atom2','type1','type2','ve1','ve2'], keep='first', inplace=True, ignore_index=False)
     gr_expand=g_expand[g_expand["Re (\AA)"].isna()==False]
@@ -168,41 +171,42 @@ def load(handel,old_handel): #Load is a function that takes the handles of the t
     gr_new_expand=g_new_expand[g_new_expand["Re (\AA)"].isna()==False]
     gw_new_expand=gr_new_expand[gr_new_expand["omega_e (cm^{-1})"].isna()==False]
     return g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand
-def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,normalize_y,n_splits=1000):
-    r_y_train_preds={}
-    r_y_test_preds={}
-    r_train_stds={}
-    r_test_stds={}
-    trval={} #intiate a dictionary to store optmized kernels and scores
-    start_time = time.time()
-    RMSE=[]
-    RMSLE=[]
-    MAE=[]
-    R=[]
-    Train_RMSE=[]
-    Train_RMSLE=[]
-    Train_MAE=[]
-    Train_R=[]
-    mean_std=[]
+def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,normalize_y,n_splits=1000): #function used for implementing the MC-CV GPR model
+    r_y_train_preds={} # Initiate a dictionary to store training predictions
+    r_y_test_preds={} # Initiate a dictionary to store testing predictions
+    r_train_stds={} # Initiate a dictionary to store training standard deviations
+    r_test_stds={} # Initiate a dictionary to store testing standard deviations
+    trval={} #intiate a dictionary to store optimized kernels and scores
+    start_time = time.time() #Timing the algorithm
+    RMSE=[] # Intiate a list to store the test RMSE of all MC-CV steps
+    RMSLE=[] # Intiate a list to store the test RMSLE of all MC-CV steps
+    MAE=[] # Intiate a list to store the test MAE of all MC-CV steps
+    R=[] # Intiate a list to store the test normalized RMSE % of all MC-CV steps
+    Train_RMSE=[] # Intiate a list to store the train RMSE of all MC-CV steps
+    Train_RMSLE=[] # Intiate a list to store the train RMSLE of all MC-CV steps
+    Train_MAE=[] # Intiate a list to store the train MAE of all MC-CV steps
+    Train_R=[] # Intiate a list to store the train normalized RMSE % of all MC-CV steps
+    mean_std=[] # Intiate a list to store the mean test std of all MC-CV steps
     train=[]
     test=[]
-    mcs = StratifiedShuffleSplit(n_splits=n_splits, test_size=test_size,random_state=42)
+    mcs = StratifiedShuffleSplit(n_splits=n_splits, test_size=test_size,random_state=42) # Using stratified shuffle split object from sklearn for the MC-CV scheme 
     #skf = StratifiedKFold(n_splits=0, shuffle=True, random_state=42)
-    loo = LeaveOneOut()
+    loo = LeaveOneOut() # Using the leave one out object from sklearn for final testing
     #print(loo.get_n_splits(data))
     s=0
 
     #for train_index, test_index in loo.split(data):
     for train_index, test_index in mcs.split(data,strata):
+        # The naming 'testing' is used insted of 'validatining' since in each MC-CV step the validation set is used to siulate the testing stage
         #print(train_index)
-        re_train_set1 = data.iloc[train_index]
-        re_train_set1['ind']=train_index
-        re_test_set1 = data.iloc[test_index]
-        re_test_set1['ind']=test_index
+        re_train_set1 = data.iloc[train_index] # The dataframe's training rows returend from mcs.split(data,strata)
+        re_train_set1['ind']=train_index #The dataframe's training rows' indicies returend from mcs.split(data,strata)
+        re_test_set1 = data.iloc[test_index] # The dataframe's testing rows returend from mcs.split(data,strata)
+        re_test_set1['ind']=test_index #The dataframe's testing rows' indicies returend from mcs.split(data,strata)
         print('size of training set before removing mirror molecules',len(re_train_set1))
         
-        re_train_set=re_train_set1[~re_train_set1['Molecule'].isin(re_test_set1['Molecule'].tolist())]
-        re_test_set=pd.concat([re_test_set1,re_train_set1[re_train_set1['Molecule'].isin(re_test_set1['Molecule'].tolist())]])
+        re_train_set=re_train_set1[~re_train_set1['Molecule'].isin(re_test_set1['Molecule'].tolist())] #Removing A-B molecules from the training set if their mirror molecules (B-A molecules) are in the testing set
+        re_test_set=pd.concat([re_test_set1,re_train_set1[re_train_set1['Molecule'].isin(re_test_set1['Molecule'].tolist())]]) #Placing miror molecules from the training set in the testing set so that A-B and B-A moleculesa re both in the testing set
         
         for i in re_train_set['Molecule'].isin([re_test_set['Molecule']]):
             if i ==True:
@@ -227,7 +231,7 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
       
         
         
-        reg = LinearRegression().fit(re_train_set[prior_features], re_train_set[logtarget])
+        reg = LinearRegression().fit(re_train_set[prior_features], re_train_set[logtarget]) #Liner regression model to fix the constatns coefficients of the prirori mean function in each MC-CV step
         
         re_train_set['prior_mean']=reg.predict(re_train_set[prior_features])
         #reg.coef_[0]*re_train_set[prior_features[0]]+reg.coef_[1]*re_train_set[prior_features[1]]+reg.coef_[2]*re_train_set[prior_features[2]]+reg.coef_[3]*re_train_set[prior_features[3]]+reg.coef_[4]*re_train_set[prior_features[4]]+reg.coef_[5]*re_train_set[prior_features[5]]+reg.intercept_
@@ -235,12 +239,12 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
         #reg.coef_[0]*re_test_set[prior_features[0]]+reg.coef_[1]*re_test_set[prior_features[1]]+reg.coef_[2]*re_test_set[prior_features[2]]+reg.coef_[3]*re_test_set[prior_features[3]]+reg.coef_[4]*re_test_set[prior_features[4]]+reg.coef_[5]*re_test_set[prior_features[5]]+reg.intercept_
         
         prior_mean='prior_mean'
-        signal_variance=(re_train_set[logtarget].var())
-        length_scale=(re_train_set[features].std()).mean()
+        signal_variance=(re_train_set[logtarget].var()) #Intiate constant cooefcient of the Matern kernel function 
+        length_scale=(re_train_set[features].std()).mean() #Intiate length scale of the Matern kernel function 
         #gpr = MyGPR(kernel=ConstantKernel(constant_value=trval[str(s)]['best $\sigma^2$'],constant_value_bounds='fixed')*Matern(length_scale=trval[str(s)]['best length scale'],length_scale_bounds='fixed' ,nu=nu)+WhiteKernel(noise_level=trval[str(s)]['best noise level'],noise_level_bounds='fixed'),n_restarts_optimizer=20,normalize_y=normalize_y,random_state=42)
-        gpr = MyGPR(kernel=ConstantKernel(constant_value=signal_variance)*Matern(length_scale=length_scale, nu=nu)+WhiteKernel(noise_level=re_train_set[target].std()/np.sqrt(2),noise_level_bounds=(10**-15,1)),n_restarts_optimizer=20,normalize_y=normalize_y,random_state=42)
+        gpr = MyGPR(kernel=ConstantKernel(constant_value=signal_variance)*Matern(length_scale=length_scale, nu=nu)+WhiteKernel(noise_level=re_train_set[target].std()/np.sqrt(2),noise_level_bounds=(10**-15,1)),n_restarts_optimizer=20,normalize_y=normalize_y,random_state=42) #Using MYGPR class with the matern Kernel with multiplicative constant and additive white noise kernel as defined in the manuscript
         #ConstantKernel(constant_value=signal_variance)*Matern(length_scale=length_scale, nu=nu)+WhiteKernel(noise_level=re_train_set[target].std()/np.sqrt(2),noise_level_bounds=(10**-15,1))
-        gpr.fit(re_train_set[features], re_train_set[logtarget]-re_train_set[prior_mean])
+        gpr.fit(re_train_set[features], re_train_set[logtarget]-re_train_set[prior_mean]) # Optmizing the kernel parameters using the fitting data (the target is offset by the prior mean)
         #gpr.log_marginal_likelihood(theta=None, eval_gradient=False, clone_kernel=False)
         
         #trval[str(s)]['$\sigma^2$']=gpr.kernel_.get_params(deep=True)['k1__k1__constant_value']
@@ -249,25 +253,25 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
 
         #re_test_set=re_test_set[~re_test_set['Molecule'].isin(['XeCl'])]
 
-        r_y_train_pred_log,r_std_train=gpr.predict(re_train_set[features], return_std=True)
-        r_y_test_pred_log,r_std_test=gpr.predict(re_test_set[features], return_std=True)
+        r_y_train_pred_log,r_std_train=gpr.predict(re_train_set[features], return_std=True) #train predictions, and train standard deviations 
+        r_y_test_pred_log,r_std_test=gpr.predict(re_test_set[features], return_std=True) #test predictions, and train standard deviations 
         
-        r_y_train_pred_log=r_y_train_pred_log+np.array(re_train_set[prior_mean])
-        r_y_test_pred_log=r_y_test_pred_log+np.array(re_test_set[prior_mean])
+        r_y_train_pred_log=r_y_train_pred_log+np.array(re_train_set[prior_mean]) #adding the prior mean back 
+        r_y_test_pred_log=r_y_test_pred_log+np.array(re_test_set[prior_mean]) #adding the prior mean back
         
-        r_y_train_pred=r_y_train_pred_log
-        r_y_test_pred=r_y_test_pred_log
+        r_y_train_pred=r_y_train_pred_log #log transformation was not used in predicting R_e
+        r_y_test_pred=r_y_test_pred_log #log transformation was not used in predicting R_e
         
         #r_std_train=r_y_train_pred*r_std_train
         #r_std_test=r_y_test_pred*r_std_test
         
         for m in range(len(r_y_test_pred)):
             if r_y_test_pred[m]<0:
-                print('yalaaahwy')
+                print('negative result') #indicates negative results if any 
         r_y_test_pred=(np.array(r_y_test_pred))
         for m in range(len(r_y_test_pred)):
             if r_y_test_pred[m]<0:
-                print('y5rabaaaay')
+                print('negative result') #indicates negative results if any 
                 
                 
         #if (100*(np.sqrt(mean_squared_error(re_test_set['Re (\AA)'],r_y_test_pred)))/((data['Re (\AA)']).max()-(data['Re (\AA)']).min())) > 3.0:
@@ -277,38 +281,38 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
         
         for  mol in  re_test_set['Molecule'].tolist():
             test.append(mol)
-        mean_std.append(np.array(r_std_test).mean())
+        mean_std.append(np.array(r_std_test).mean()) #calculating mean standard deviations
 
         trval[str(s)]['mean_std']=mean_std[-1]
 
-        RMSE.append(np.sqrt(mean_squared_error(re_test_set[target],r_y_test_pred)))
+        RMSE.append(np.sqrt(mean_squared_error(re_test_set[target],r_y_test_pred))) #calculating test RMSE of the split and appending it to the test RMSE list 
 
-        trval[str(s)]['RMSE']=RMSE[-1]
+        trval[str(s)]['RMSE']=RMSE[-1] #RMSE of split s
         
-        Train_RMSE.append(np.sqrt(mean_squared_error(re_train_set[target],r_y_train_pred)))
+        Train_RMSE.append(np.sqrt(mean_squared_error(re_train_set[target],r_y_train_pred))) #calculating train RMSE of the split and appending it to the Train_RMSE list
 
-        trval[str(s)]['Train_RMSE']=Train_RMSE[-1]
+        trval[str(s)]['Train_RMSE']=Train_RMSE[-1] #Train RMSE of split s
         
-        RMSLE.append(np.sqrt(mean_squared_error(re_test_set[logtarget],r_y_test_pred_log)))
+        RMSLE.append(np.sqrt(mean_squared_error(re_test_set[logtarget],r_y_test_pred_log))) #calculating test RMSLE of the split and appending it to the test RMSLE list 
 
-        trval[str(s)]['RMSLE']=RMSLE[-1]
+        trval[str(s)]['RMSLE']=RMSLE[-1] #Test RMSLE of split s
         
                 
-        Train_RMSLE.append(np.sqrt(mean_squared_error(re_train_set[logtarget],r_y_train_pred_log)))
+        Train_RMSLE.append(np.sqrt(mean_squared_error(re_train_set[logtarget],r_y_train_pred_log))) #calculating train RMSLE of the split and appending it to the Train_RMSLE list 
 
-        trval[str(s)]['Train_RMSLE']=Train_RMSLE[-1]
+        trval[str(s)]['Train_RMSLE']=Train_RMSLE[-1] #Train RMSE of split s
 
-        MAE.append(sum(abs(re_test_set[target]-(r_y_test_pred)))/len(re_test_set[target]))
+        MAE.append(sum(abs(re_test_set[target]-(r_y_test_pred)))/len(re_test_set[target])) #calculating test MAE of the split and appending it to the test MAE list 
 
-        trval[str(s)]['MAE']=MAE[-1]
+        trval[str(s)]['MAE']=MAE[-1] #Test MAE of split s
         
-        Train_MAE.append(sum(abs(re_train_set[target]-(r_y_train_pred)))/len(re_train_set[target]))
+        Train_MAE.append(sum(abs(re_train_set[target]-(r_y_train_pred)))/len(re_train_set[target])) #calculating train MAE of the split and appending it to the Train_MAE list 
 
-        trval[str(s)]['Train_MAE']=Train_MAE[-1]
+        trval[str(s)]['Train_MAE']=Train_MAE[-1] #Train MAE of split s
 
-        R.append(100*(np.sqrt(mean_squared_error(re_test_set[target],r_y_test_pred)))/((data[target]).max()-(data[target]).min()))
+        R.append(100*(np.sqrt(mean_squared_error(re_test_set[target],r_y_test_pred)))/((data[target]).max()-(data[target]).min())) #calculating test R of the split and appending it to the test R list 
 
-        trval[str(s)]['R']=R[-1]
+        trval[str(s)]['R']=R[-1] #Test R of split s
         
         #if trval[str(s)]['R'] > 3.0:
          #   continue
@@ -334,27 +338,27 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
 
         for i in range(len(re_train_set.ind)):
             if re_train_set.ind.tolist()[i] not in r_y_train_preds:   
-                r_y_train_preds[re_train_set.ind.tolist()[i]]=[r_y_train_pred[i]]
-                r_train_stds[re_train_set.ind.tolist()[i]]=[r_std_train[i]]
+                r_y_train_preds[re_train_set.ind.tolist()[i]]=[r_y_train_pred[i]] #adding MC-CV train prediction list of a molecule of index 'i' which is not yet in re_train_set dictionary
+                r_train_stds[re_train_set.ind.tolist()[i]]=[r_std_train[i]] #adding MC-CV train GPR standard deviation list of a molecule of index 'i' not yet in r_train_stds dictionary
 
                 #print("Molecule: ",re_train_set.loc[train_index[i],'Molecule'],"true: ",gr.loc[train_index[i],'Re (\AA)'],"pred: ",r_y_train_pred[i],"standard deviation: ",r_std_train[i])
 
             else:
-                r_y_train_preds[re_train_set.ind.tolist()[i]].append(r_y_train_pred[i])
-                r_train_stds[re_train_set.ind.tolist()[i]].append(r_std_train[i])
+                r_y_train_preds[re_train_set.ind.tolist()[i]].append(r_y_train_pred[i]) #apeending new MC-CV train prediction to an existing list of predictions of a molecule indexed i in the r_y_train_preds dictionary
+                r_train_stds[re_train_set.ind.tolist()[i]].append(r_std_train[i]) #apeending new MC-CV train standard deviation to an existing list of predictions of a molecule indexed i in the r_train_stds dictionary
                 
         for i in range(len(re_test_set.ind)):
             if re_test_set.ind.tolist()[i] not in r_y_test_preds:
-                r_y_test_preds[re_test_set.ind.tolist()[i]]=[r_y_test_pred[i]]
-                r_test_stds[re_test_set.ind.tolist()[i]]=[r_std_test[i]]
+                r_y_test_preds[re_test_set.ind.tolist()[i]]=[r_y_test_pred[i]] #adding MC-CV test prediction list of a molecule of index 'i' which is not yet in re_test_set dictionary
+                r_test_stds[re_test_set.ind.tolist()[i]]=[r_std_test[i]] #adding MC-CV test GPR standard deviation list of a molecule of index 'i' not yet in r_test_stds dictionary
             else:
-                r_y_test_preds[re_test_set.ind.tolist()[i]].append(r_y_test_pred[i])
-                r_test_stds[re_test_set.ind.tolist()[i]].append(r_std_test[i])
+                r_y_test_preds[re_test_set.ind.tolist()[i]].append(r_y_test_pred[i]) #apeending new MC-CV test prediction to an existing list of predictions of a molecule indexed 'i' in the r_y_test_preds dictionary
+                r_test_stds[re_test_set.ind.tolist()[i]].append(r_std_test[i]) #apeending new MC-CV test standard deviation to an existing list of predictions of a molecule indexed 'i' in the r_test_stds dictionary
     end_time = time.time()
     retime=end_time-start_time
     retime
     return trval,train,test,mean_std,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds
-def plot_results(df,x,y,target,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds):
+def plot_results(df,x,y,target,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds): #funtion to create scatter plots of training and testing predictions
     re_train_preds=[]
     re_train_std=[]
     re_test_preds=[]
