@@ -224,10 +224,10 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
 
 
 
-        trval[str(s)]={}
-        trval[str(s)]['$\sigma^2$']=1
-        trval[str(s)]['length scale']=1
-        trval[str(s)]['noise level']=1
+        trval[str(s)]={} # intiate a dictionary that stores the three parameters values after optimization for each split s
+        trval[str(s)]['$\sigma^2$']=1 # intiate the value of the multiplicative constant of the kernel
+        trval[str(s)]['length scale']=1 # intiate the value of the length scale 
+        trval[str(s)]['noise level']=1 # intiate the value of the noise level in the additive white kernel
       
         
         
@@ -333,7 +333,7 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
               
         
     
-        s=s+1
+        s=s+1 # incrementing the MC-CV split counter
         
 
         for i in range(len(re_train_set.ind)):
@@ -356,16 +356,16 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
                 r_test_stds[re_test_set.ind.tolist()[i]].append(r_std_test[i]) #apeending new MC-CV test standard deviation to an existing list of predictions of a molecule indexed 'i' in the r_test_stds dictionary
     end_time = time.time()
     retime=end_time-start_time
-    retime
+    retime # timing the validation stage
     return trval,train,test,mean_std,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds
 def plot_results(df,x,y,target,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds): #funtion to create scatter plots of training and testing predictions
-    re_train_preds=[]
-    re_train_std=[]
-    re_test_preds=[]
-    re_test_std=[]
-    out=[]
+    re_train_preds=[] # initiating a list to store the average training predictions for each molecule over the MC-CV splits 
+    re_train_std=[] # initiating a list to store the average training standard deviations for each molecule over the MC-CV splits
+    re_test_preds=[]  # initiating a list to store the average testing predictions for each molecule over the MC-CV splits 
+    re_test_std=[] # initiating a list to store the average testing standard deviations for each molecule over the MC-CV splits
+    out=[] # intiating a list that stores the indices of the molecules that has never been used in testing (validation) set 
     for index in range(len(df.index)):
-            re_train_preds.append(np.array(r_y_train_preds[index]).mean())
+            re_train_preds.append(np.array(r_y_train_preds[index]).mean()) 
             re_train_std.append(np.std(np.array(r_y_train_preds[index]))+np.array(r_train_stds[index]).mean())
             re_test_preds.append((np.array(r_y_test_preds[index])).mean())
             re_test_std.append(np.std(np.array(r_y_test_preds[index]))+np.array(r_test_stds[index]).mean())
@@ -389,7 +389,7 @@ def plot_results(df,x,y,target,r_y_train_preds,r_train_stds,r_y_test_preds,r_tes
     pyplot.xlabel(x,fontdict={'size': 16})
     pyplot.ylabel(y,fontdict={'size': 16})
     return re_train_preds,re_train_std,re_test_preds,re_test_std,out,fig,ax
-def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,handle):
+def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,handle): # A function that returns a data frame of the final results and scores of the model 
     results={}
     results[data_describtion]={}
     results[data_describtion]['Number of molecules in the whole data set']=no_molecules
@@ -400,29 +400,31 @@ def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,han
     results.to_csv(handle, index=True)  
     return results
 g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"/gpfs/home/maaibrahim/gpr/g.csv",old_handel=r"/gpfs/home/maaibrahim/gpr/list of molecules used in Xiangue and Jesus paper.csv")
-gw_expand=gr_expand[~gr_expand['Molecule'].isin(['XeCl','AgBi','Hg2','HgCl'])]
-gw_expand['wcat']=gw_expand['Re (\AA)']
+gw_expand=gr_expand[~gr_expand['Molecule'].isin(['XeCl','AgBi','Hg2','HgCl'])] # the molecules XeCl, AgBi , Hg2 and HgCl has been removed due to uncertainties in their experimental spectroscopic constants values 
+gw_expand['wcat']=gw_expand['Re (\AA)'] # gw_expand['wcat'] is used to define strata for the process of stratified sampling
 gw_expand_unique=np.unique(gw_expand['wcat'])
-ind=[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,309]
+ind=[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,309] # indicies used to defined strata for the stratified random sampling 
 print(len(gw_expand_unique))
-for i in range(len(ind)-1):
-    gw_expand['wcat'].where((gw_expand['wcat']>gw_expand_unique[ind[i+1]])|(gw_expand['wcat']<=gw_expand_unique[ind[i]]),gw_expand_unique[ind[i]],inplace=True)
-gw_expand['mu^(1/2)']=(np.sqrt(gw_expand['Reduced mass']))
-gw_expand['ln(mu^(1/2))']=np.log(np.sqrt(gw_expand['Reduced mass']))
-gw_expand['ln(w)']=np.log(gw_expand['omega_e (cm^{-1})'])
-trval,train,test,mean_std,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds=ml_model(data=gw_expand,strata=gw_expand['wcat'],test_size=31,features=['p1','p2','g1_lan_act','g2_lan_act'],prior_features=['p1','p2','g1_lan_act','g2_lan_act'],target='Re (\AA)',logtarget='Re (\AA)',nu=1/2,normalize_y=False,n_splits=500)
-re_train_preds,re_train_std,re_test_preds,re_test_std,out,fig,ax=plot_results(gw_expand,'True $R_e(\AA)$','Predicted $R_e(\AA)$','Re (\AA)',r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds);
+for i in range(len(ind)-1): 
+    gw_expand['wcat'].where((gw_expand['wcat']>gw_expand_unique[ind[i+1]])|(gw_expand['wcat']<=gw_expand_unique[ind[i]]),gw_expand_unique[ind[i]],inplace=True) # stratification according to the levels of the target variables
+
+gw_expand['mu^(1/2)']=(np.sqrt(gw_expand['Reduced mass'])) # square root of the reduced mass
+gw_expand['ln(mu^(1/2))']=np.log(np.sqrt(gw_expand['Reduced mass'])) #ln of the square root of the reduced mass
+gw_expand['ln(w)']=np.log(gw_expand['omega_e (cm^{-1})']) # ln of $\omega_e$
+
+trval,train,test,mean_std,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds=ml_model(data=gw_expand,strata=gw_expand['wcat'],test_size=31,features=['p1','p2','g1_lan_act','g2_lan_act'],prior_features=['p1','p2','g1_lan_act','g2_lan_act'],target='Re (\AA)',logtarget='Re (\AA)',nu=1/2,normalize_y=False,n_splits=1000) #MC-CV gpr 
+re_train_preds,re_train_std,re_test_preds,re_test_std,out,fig,ax=plot_results(gw_expand,'True $R_e(\AA)$','Predicted $R_e(\AA)$','Re (\AA)',r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds); # plotting scatter plots 
 pyplot.savefig('r1_scatter.svg')
 for i in range(len(re_test_preds)):
     if abs(gw_expand['Re (\AA)'].tolist()[i]-re_test_preds[i])<0.1:
         continue
-    ax.annotate(gw_expand['Molecule'].tolist()[i], (gw_expand['Re (\AA)'].tolist()[i], re_test_preds[i]))
-pyplot.savefig('r1_scatter_ann.svg')
-results('hob reg3na leeko',gw_expand,'Re (\AA)',re_test_preds,308,MAE,RMSE,R,r"stat_summ.csv")
-gw_expand['re_test_preds']=re_test_preds
-gw_expand['re_test_std']=re_test_std
-gw_expand['re_train_preds']=re_train_preds
-gw_expand['re_train_std']=re_train_std
+    ax.annotate(gw_expand['Molecule'].tolist()[i], (gw_expand['Re (\AA)'].tolist()[i], re_test_preds[i])) # annotating molecules with 0.1 angstrom absolute error 
+pyplot.savefig('r1_scatter_ann.svg') # saving the annotated scatter plot
+results('hob reg3na leeko',gw_expand,'Re (\AA)',re_test_preds,308,MAE,RMSE,R,r"stat_summ.csv") # saving results and scores
+gw_expand['re_test_preds']=re_test_preds # saving the average testing predictions for each molecule over the MC-CV splits
+gw_expand['re_test_std']=re_test_std # saving the average testing standard deviations for each molecule over the MC-CV splits
+gw_expand['re_train_preds']=re_train_preds # saving the average training predictions for each molecule over the MC-CV splits
+gw_expand['re_train_std']=re_train_std # saving the average training standard deviations for each molecule over the MC-CV splits
 gw_expand.to_csv('r1_gr_expand_pred.csv')
-split_stat = pd.DataFrame(list(zip(Train_MAE,Train_RMSE,Train_R,MAE,RMSE,R)),columns =['Train_MAE','Train_RMSE','Train_R','MAE','RMSE','R'])
-split_stat.to_csv('r1_split_stat.csv')
+split_stat = pd.DataFrame(list(zip(Train_MAE,Train_RMSE,Train_R,MAE,RMSE,R)),columns =['Train_MAE','Train_RMSE','Train_R','MAE','RMSE','R']) # saving final scores for each split
+split_stat.to_csv('r1_split_stat.csv') # saving final scores for each split in a csv file
