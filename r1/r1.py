@@ -427,4 +427,4 @@ gw_expand['re_train_preds']=re_train_preds # saving the average training predict
 gw_expand['re_train_std']=re_train_std # saving the average training standard deviations for each molecule over the MC-CV splits
 gw_expand.to_csv('r1_gr_expand_pred.csv')
 split_stat = pd.DataFrame(list(zip(Train_MAE,Train_RMSE,Train_R,MAE,RMSE,R)),columns =['Train_MAE','Train_RMSE','Train_R','MAE','RMSE','R']) # saving final scores for each split
-split_stat.to_csv('r1_split_stat.csv') # saving final scores for each split in a csv file
+split_stat.to_csv('r1_split_stat.csv') # saving final scores for each split in a CSV file
