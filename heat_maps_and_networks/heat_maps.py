@@ -35,6 +35,7 @@ class MyGPR(GaussianProcessRegressor): #MyGPR(GaussianProcessRegressor) class sp
             raise ValueError("Unknown optimizer %s." % self.optimizer)
             
         return theta_opt, func_min
+------------------------------------------------------------------------------
 def load(handel,old_handel): #Load is a function that takes the handles of the two CSV files containing the full data set (including old and new data) and the data set containing the data from Liu et al. 2021 and returns multiple pandas data frames of the data as defined below
     dfe=pd.read_csv(handel,index_col=None)
     df1=pd.read_csv(r"/gpfs/home/maaibrahim/gpr/peridic.csv",index_col=None) #Includes information from the periodic table for each element
@@ -171,6 +172,7 @@ def load(handel,old_handel): #Load is a function that takes the handles of the t
     gr_new_expand=g_new_expand[g_new_expand["Re (\AA)"].isna()==False]
     gw_new_expand=gr_new_expand[gr_new_expand["omega_e (cm^{-1})"].isna()==False]
     return g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand
+------------------------------------------------------------------------------
 def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,normalize_y,n_splits=1000): #function used for implementing the MC-CV GPR model
     r_y_train_preds={} # Initiate a dictionary to store training predictions
     r_y_test_preds={} # Initiate a dictionary to store testing predictions
@@ -358,6 +360,7 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
     retime=end_time-start_time
     retime # timing the validation stage
     return trval,train,test,mean_std,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds
+------------------------------------------------------------------------------
 def plot_results(df,x,y,target,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds): #funtion to create scatter plots of training and testing predictions
     re_train_preds=[] # initiating a list to store the average training predictions for each molecule over the MC-CV splits 
     re_train_std=[] # initiating a list to store the average training standard deviations for each molecule over the MC-CV splits
@@ -389,6 +392,7 @@ def plot_results(df,x,y,target,r_y_train_preds,r_train_stds,r_y_test_preds,r_tes
     pyplot.xlabel(x,fontdict={'size': 16})
     pyplot.ylabel(y,fontdict={'size': 16})
     return re_train_preds,re_train_std,re_test_preds,re_test_std,out,fig,ax
+------------------------------------------------------------------------------    
 def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,handle): # A function that returns a data frame of the final results and scores of the model 
     results={}
     results[data_describtion]={}
@@ -399,3 +403,86 @@ def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,han
     results=pd.DataFrame.from_dict(results) 
     results.to_csv(handle, index=True)  
     return results
+------------------------------------------------------------------------------
+g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"/gpfs/home/maaibrahim/gpr/g.csv",old_handel=r"/gpfs/home/maaibrahim/gpr/list of molecules used in Xiangue and Jesus paper.csv")
+gw_expand=gr_expand[~gr_expand['Molecule'].isin(['XeCl','AgBi','Hg2','HgCl'])] # the molecules XeCl, AgBi , Hg2 and HgCl has been removed due to uncertainties in their experimental spectroscopic constants values 
+gw_expand['wcat']=gw_expand['Re (\AA)'] # gw_expand['wcat'] is used to define strata for the process of stratified sampling
+gw_expand_unique=np.unique(gw_expand['wcat'])
+ind=[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,309] # indicies used to defined strata for the stratified random sampling 
+print(len(gw_expand_unique))
+for i in range(len(ind)-1): 
+    gw_expand['wcat'].where((gw_expand['wcat']>gw_expand_unique[ind[i+1]])|(gw_expand['wcat']<=gw_expand_unique[ind[i]]),gw_expand_unique[ind[i]],inplace=True) # stratification according to the levels of the target variables
+
+gw_expand['mu^(1/2)']=(np.sqrt(gw_expand['Reduced mass'])) # square root of the reduced mass
+gw_expand['ln(mu^(1/2))']=np.log(np.sqrt(gw_expand['Reduced mass'])) #ln of the square root of the reduced mass
+gw_expand['ln(w)']=np.log(gw_expand['omega_e (cm^{-1})']) # ln of $\omega_e$
+signal_variance=(gr_expand_nodub['Re (\AA)'].var())
+length_scale=(gr_expand_nodub[['g1_lan_act','g2_lan_act','p1','p2','mu^(1/2)']].std()).mean()
+------------------------------------------------------------------------------
+gpr = GaussianProcessRegressor(kernel=ConstantKernel(constant_value=signal_variance)*Matern(length_scale=length_scale, nu=3/2)+WhiteKernel(noise_level=gr_expand_nodub['Re (\AA)'].std()/np.sqrt(2),noise_level_bounds=(10**-15,1)),n_restarts_optimizer=20,normalize_y=False,random_state=42)
+#ConstantKernel(constant_value=signal_variance)*Matern(length_scale=length_scale, nu=nu)+WhiteKernel(noise_level=re_train_set[target].std()/np.sqrt(2),noise_level_bounds=(10**-15,1))
+gpr.fit(gr_expand_nodub[['g1_lan_act','g2_lan_act','p1','p2','mu^(1/2)']], gr_expand_nodub['Re (\AA)'])
+gpr.kernel_.get_params(deep=True)
+------------------------------------------------------------------------------
+k=Matern(length_scale=100.813391265881, nu=3/2)(gr_expand_nodub[['g1_lan_act','g2_lan_act','p1','p2','mu^(1/2)']],gr_expand_nodub[['g1_lan_act','g2_lan_act','p1','p2','mu^(1/2)']])
+
+np.shape(k)
+np.shape(k[:10,:10])
+np.save('kernel.npy', k)
+------------------------------------------------------------------------------
+fig, ax =pyplot.subplots(figsize=(10,10))
+#sns.palplot(sns.dark_palette("gray"))
+ax = sns.heatmap(
+    k[:20,:20], 
+    cmap=sns.color_palette('gray_r', len(gr_expand_nodub['Molecule'].to_list()[20:40])),
+    square=True
+)
+ax.set_xticklabels(
+    gr_expand_nodub['Molecule'].to_list()[:20],
+    rotation=90,
+    horizontalalignment='right',fontsize=14
+);
+ax.set_yticklabels(
+    gr_expand_nodub['Molecule'].to_list()[:20],
+    rotation=0,
+    horizontalalignment='right'
+,fontsize=14);
+pyplot.savefig('h1.svg',bbox_inches=Bbox([[-1,-1],fig.get_size_inches()]))
+------------------------------------------------------------------------------
+fig, ax =pyplot.subplots(figsize=(10,10))
+#sns.palplot(sns.dark_palette("gray"))
+ax = sns.heatmap(
+    k[20:40,20:40], 
+    cmap=sns.color_palette('gray_r', len(gr_expand_nodub['Molecule'].to_list()[20:40])),
+    square=True
+)
+ax.set_xticklabels(
+    gr_expand_nodub['Molecule'].to_list()[20:40],
+    rotation=90,
+    horizontalalignment='right',fontsize=14
+);
+ax.set_yticklabels(
+    gr_expand_nodub['Molecule'].to_list()[20:40],
+    rotation=0,
+    horizontalalignment='right',fontsize=14
+);
+pyplot.savefig('h2.svg',bbox_inches=Bbox([[-1,-1],fig.get_size_inches()]))
+------------------------------------------------------------------------------
+fig, ax =pyplot.subplots(figsize=(10,10))
+#sns.palplot(sns.dark_palette("gray"))
+ax = sns.heatmap(
+    k[40:60,40:60] ,
+    cmap=sns.color_palette('gray_r', len(gr_expand_nodub['Molecule'].to_list()[40:60])),
+    square=True
+)
+ax.set_xticklabels(
+    gr_expand_nodub['Molecule'].to_list()[40:60],
+    rotation=90,
+    horizontalalignment='right',fontsize=14
+);
+ax.set_yticklabels(
+    gr_expand_nodub['Molecule'].to_list()[40:60],
+    rotation=0,
+    horizontalalignment='right',fontsize=14
+);
+pyplot.savefig('h3.svg',bbox_inches=Bbox([[-1,-1],fig.get_size_inches()]))
