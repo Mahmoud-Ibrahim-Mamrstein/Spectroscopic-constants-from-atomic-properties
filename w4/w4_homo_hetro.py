@@ -477,3 +477,35 @@ r_std_test=r_y_test_pred*r_std_test
 
 
 print(re_test_set[target],r_y_test_pred)
+------------------------------------------------------------------------
+df=gw_expand[gw_expand['atom1']==gw_expand['atom2']]
+fig, ax =pyplot.subplots(figsize=(7,7))
+pyplot.xticks(fontsize=14)
+pyplot.yticks(fontsize=14)
+#ax.set_xlim(0, df[target].max())
+#ax.errorbar(df[target], re_train_preds, yerr=re_train_std, fmt ='o',label='Training set')
+ax.errorbar(-200, -200,fmt='-o')
+ax.errorbar(df[target], r_y_test_pred, yerr=r_std_test, fmt ='o',label='Homonuclear molecules in the test set')
+
+#ax.tick_params(axis="y", direction="out",labelsize=None)
+line=df[target].tolist()
+line.append(-100)
+line.append(5000)
+ax.plot(line,line,'-k')
+#pyplot.xticks(ticks=np.linspace(0, 4000, num=4))
+#pyplot.yticks(ticks=np.linspace(0, 4000, num=4))
+ax.plot([0, 1], [0, 1],'-k', transform=ax.transAxes)
+pyplot.xlim(np.array(line).min(),np.ceil(np.array(line).max()))
+pyplot.ylim(np.array(line).min(),np.ceil(np.array(line).max()))
+ax.legend(prop={'size': 12})
+pyplot.xlabel('True $\omega_e (cm^{-1})$',fontdict={'size': 16})
+pyplot.ylabel('Predicted $\omega_e (cm^{-1})$',fontdict={'size': 16})
+#return re_train_preds,re_train_std,re_test_preds,re_test_std,out
+pyplot.savefig('experiment3_homo_from_hetro.svg')
+#for i in range(len(df)):
+#    ax.annotate(df['Molecule'].tolist()[i], (df[target].tolist()[i], r_y_test_pred[i] + 0.2))
+for i in range(len(df)):
+    if abs(df['omega_e (cm^{-1})'].tolist()[i]-r_y_test_pred[i])<100:
+        continue
+    ax.annotate(df['Molecule'].tolist()[i], (df['omega_e (cm^{-1})'].tolist()[i],  r_y_test_pred[i]))
+pyplot.savefig('experiment3_homo_from_hetro_ann.svg',bbox_inches=Bbox([[-1,-1],fig.get_size_inches()])) 
