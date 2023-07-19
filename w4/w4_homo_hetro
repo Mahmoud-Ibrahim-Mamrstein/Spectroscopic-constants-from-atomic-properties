@@ -1,0 +1,52 @@
+features=['Re (au)','p1','p2','g1_lan_act','g2_lan_act','mu^(1/2)']
+prior_features=['Re (au)','p1','p2','g1_lan_act','g2_lan_act','ln(mu^(1/2))']
+logtarget="ln(omega_e (cm^{-1}))"
+target="omega_e (cm^{-1})"
+nu=3/2
+normalize_y=True
+gw_expand.loc[gw_expand.atom2=='D','atom2']=['H']*len(gw_expand.loc[gw_expand.atom2=='D']['atom2'])
+gw_expand.loc[gw_expand.atom1=='D','atom1']=['H']*len(gw_expand.loc[gw_expand.atom1=='D']['atom1'])
+gw_expand.loc[gw_expand.atom2=='T','atom2']=['H']*len(gw_expand.loc[gw_expand.atom2=='T']['atom2'])
+gw_expand.loc[gw_expand.atom1=='T','atom1']=['H']*len(gw_expand.loc[gw_expand.atom1=='T']['atom1'])
+#g.loc[g.atom1=='D','p1']=[1]*len(g.loc[g.atom1=='D']['p1'])
+#g.loc[g.atom2=='T','p2']=[1]*len(g.loc[g.atom2=='T']['p2'])
+#g.loc[g.atom1=='T','p1']=[1]*len(g.loc[g.atom1=='T']['p1'])
+re_train_set=gw_expand[gw_expand['atom1']!=gw_expand['atom2']]
+re_test_set=gw_expand[gw_expand['atom1']==gw_expand['atom2']]
+signal_variance=(re_train_set[logtarget].var())
+length_scale=(re_train_set[features].std()).mean()
+
+reg = LinearRegression().fit(re_train_set[prior_features], re_train_set[logtarget])
+        
+re_train_set['prior_mean']=reg.coef_[0]*re_train_set[prior_features[0]]+reg.coef_[1]*re_train_set[prior_features[1]]+reg.coef_[2]*re_train_set[prior_features[2]]+reg.coef_[3]*re_train_set[prior_features[3]]+reg.coef_[4]*re_train_set[prior_features[4]]+reg.coef_[5]*re_train_set[prior_features[5]]+reg.intercept_
+re_test_set['prior_mean']=reg.coef_[0]*re_test_set[prior_features[0]]+reg.coef_[1]*re_test_set[prior_features[1]]+reg.coef_[2]*re_test_set[prior_features[2]]+reg.coef_[3]*re_test_set[prior_features[3]]+reg.coef_[4]*re_test_set[prior_features[4]]+reg.coef_[5]*re_test_set[prior_features[5]]+reg.intercept_
+
+prior_mean='prior_mean'
+
+
+
+gpr = MyGPR(kernel=ConstantKernel(constant_value=signal_variance)*Matern(length_scale=length_scale, nu=nu)+WhiteKernel(noise_level=re_train_set[target].std()/np.sqrt(2),noise_level_bounds=(10**-15,1)),n_restarts_optimizer=20,normalize_y=normalize_y,random_state=42)
+#ConstantKernel(constant_value=signal_variance)*Matern(length_scale=length_scale, nu=nu)+WhiteKernel(noise_level=re_train_set[target].std()/np.sqrt(2),noise_level_bounds=(10**-15,1))
+gpr.fit(re_train_set[features], re_train_set[logtarget]-re_train_set[prior_mean])
+#gpr.log_marginal_likelihood(theta=None, eval_gradient=False, clone_kernel=False)
+
+#trval[str(s)]['$\sigma^2$']=gpr.kernel_.get_params(deep=True)['k1__k1__constant_value']
+#trval[str(s)]['length scale']=gpr.kernel_.get_params(deep=True)['k1__k2__length_scale']
+#trval[str(s)]['noise level']=gpr.kernel_.get_params(deep=True)['k2__noise_level']
+
+#re_test_set=re_test_set[~re_test_set['Molecule'].isin(['XeCl'])]
+
+r_y_train_pred_log,r_std_train=gpr.predict(re_train_set[features], return_std=True)
+r_y_test_pred_log,r_std_test=gpr.predict(re_test_set[features], return_std=True)
+
+r_y_train_pred_log=r_y_train_pred_log+np.array(re_train_set[prior_mean])
+r_y_test_pred_log=r_y_test_pred_log+np.array(re_test_set[prior_mean])
+
+r_y_train_pred=np.exp(np.array(r_y_train_pred_log))*(1+0.5*r_std_train**2)
+r_y_test_pred=np.exp(np.array(r_y_test_pred_log))*(1+0.5*r_std_test**2)
+
+r_std_train=r_y_train_pred*r_std_train
+r_std_test=r_y_test_pred*r_std_test
+
+
+print(re_test_set[target],r_y_test_pred)
