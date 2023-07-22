@@ -399,12 +399,12 @@ def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,han
     results=pd.DataFrame.from_dict(results) 
     results.to_csv(handle, index=True)  
     return results
-g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"data/g.csv",old_handel=r"/gpfs/home/maaibrahim/gpr/list of molecules used in Xiangue and Jesus paper.csv")
+g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"data/g.csv",old_handel=r"data/list of molecules used in Xiangue and Jesus paper.csv")
 gw_expand=gr_expand[~gr_expand['Molecule'].isin(['XeCl','AgBi','Hg2','HgCl'])] # the molecules XeCl, AgBi , Hg2 and HgCl has been removed due to uncertainties in their experimental spectroscopic constants values 
 gw_expand['wcat']=gw_expand['Re (\AA)'] # gw_expand['wcat'] is used to define strata for the process of stratified sampling
 gw_expand_unique=np.unique(gw_expand['wcat'])
 ind=[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,309] # indicies used to defined strata for the stratified random sampling 
-print(len(gw_expand_unique))
+#print(len(gw_expand_unique))
 for i in range(len(ind)-1): 
     gw_expand['wcat'].where((gw_expand['wcat']>gw_expand_unique[ind[i+1]])|(gw_expand['wcat']<=gw_expand_unique[ind[i]]),gw_expand_unique[ind[i]],inplace=True) # stratification according to the levels of the target variables
 
