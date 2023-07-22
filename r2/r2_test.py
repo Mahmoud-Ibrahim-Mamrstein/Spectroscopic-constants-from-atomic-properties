@@ -241,8 +241,9 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
         
         reg = LinearRegression().fit(re_train_set[prior_features], re_train_set[logtarget])
         
-        re_train_set['prior_mean']=reg.coef_[0]*re_train_set[prior_features[0]]+reg.coef_[1]*re_train_set[prior_features[1]]+reg.coef_[2]*re_train_set[prior_features[2]]+reg.coef_[3]*re_train_set[prior_features[3]]+reg.coef_[4]*re_train_set[prior_features[4]]+reg.intercept_
-        re_test_set['prior_mean']=reg.coef_[0]*re_test_set[prior_features[0]]+reg.coef_[1]*re_test_set[prior_features[1]]+reg.coef_[2]*re_test_set[prior_features[2]]+reg.coef_[3]*re_test_set[prior_features[3]]+reg.coef_[4]*re_test_set[prior_features[4]]+reg.intercept_
+        re_train_set['prior_mean']=reg.predict(re_train_set[prior_features])
+        #reg.coef_[0]*re_train_set[prior_features[0]]+reg.coef_[1]*re_train_set[prior_features[1]]+reg.coef_[2]*re_train_set[prior_features[2]]+reg.coef_[3]*re_train_set[prior_features[3]]+reg.coef_[4]*re_train_set[prior_features[4]]+reg.coef_[5]*re_train_set[prior_features[5]]+reg.intercept_
+        re_test_set['prior_mean']=reg.predict(re_test_set[prior_features])
         
         prior_mean='prior_mean'
         signal_variance=(re_train_set[logtarget].var())
@@ -427,9 +428,9 @@ for i in range(len(ind)-1):
     gw_expand['wcat'].where((gw_expand['wcat']>gw_expand_unique[ind[i+1]])|(gw_expand['wcat']<=gw_expand_unique[ind[i]]),gw_expand_unique[ind[i]],inplace=True)
 np.unique(gw_expand['wcat'],return_counts=True)
 #len(np.unique(gw_expand['wcat']))
-trval,train,test,mean_std,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds=ml_model(data=gw_expand,strata=gw_expand['wcat'],test_size=33,features=['Re (au)','p1','p2','g1_lan_act','g2_lan_act','mu^(1/2)'],prior_features=['Re (au)','p1','p2','g1_lan_act','g2_lan_act','ln(mu^(1/2))'],target='omega_e (cm^{-1})',logtarget="ln(omega_e (cm^{-1}))",nu=3/2,normalize_y=True,n_splits=200)
-test_molecules=gw_expand[gw_expand['Molecule'].isin(['InBr','MoC','NbC','NiC','NiO','NiS','PbI','PdC','RuC','SnI','UO','WC','YC','ZnBr','ZnCl','WO','ZnI','ZnF','HCl','DCl'])].drop_duplicates(subset='Molecule')['Molecule'].tolist()
-true_values=gw_expand[gw_expand['Molecule'].isin(['InBr','MoC','NbC','NiC','NiO','NiS','PbI','PdC','RuC','SnI','UO','WC','YC','ZnBr','ZnCl','WO','ZnI','ZnF','HCl','DCl'])].drop_duplicates(subset='Molecule')['omega_e (cm^{-1})'].tolist()
+trval,train,test,mean_std,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_train_stds,r_y_test_preds,r_test_stds=ml_model(data=gw_expand,strata=gw_expand['wcat'],test_size=33,features=['p1','p2','g1_lan_act','g2_lan_act','mu^(1/2)'],prior_features=['p1','p2','g1_lan_act','g2_lan_act','ln(mu^(1/2))'],target='Re (\AA)',logtarget='Re (\AA)',nu=3/2,normalize_y=False,n_splits=200)
+test_molecules=gw_expand[gw_expand['Molecule'].isin(['InBr','MoC','NbC','NiC','NiO','NiS','PbI','PdC','RuC','SnI','UO','WC','YC','ZnBr','ZnCl','WO','ZnI','ZnF','HCl','DCl','CrC','CoO','IrSi','UF','ZrC'])].drop_duplicates(subset='Molecule')['Molecule'].tolist()
+true_values=gw_expand[gw_expand['Molecule'].isin(['InBr','MoC','NbC','NiC','NiO','NiS','PbI','PdC','RuC','SnI','UO','WC','YC','ZnBr','ZnCl','WO','ZnI','ZnF','HCl','DCl','CrC','CoO','IrSi','UF','ZrC'])].drop_duplicates(subset='Molecule')['omega_e (cm^{-1})'].tolist()
 #re_train_std=[]
 re_test_preds=[]
 re_test_std=[]
@@ -444,5 +445,5 @@ for index in r_y_test_preds:
         re_test_preds.append(((r_y_test_preds[index][0])))
         re_test_std.append(((r_test_stds[index][0])))
         print(index)
-testing_results = pd.DataFrame(list(zip(test_molecules, true_values,re_test_preds,re_test_std)), columns =['Molecule', 'true $\omega_e$ (cm$^{-1}$)','Predicted $\omega_e$ (cm$^{-1}$)','error bars'])
+testing_results = pd.DataFrame(list(zip(test_molecules, true_values,re_test_preds,re_test_std)), columns =['Molecule', 'true $R_e \AA$','Predicted $R_e \AA$)','error bars'])
 testing_results.to_csv(r'C:\Users\mamr4\OneDrive - Stony Brook University\Master thesis\Computational\Results\ML results\w4\testing_results.csv')
