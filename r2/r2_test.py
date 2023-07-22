@@ -412,7 +412,7 @@ def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,han
     results.to_csv(handle, index=True)  
     return results
   
-g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"C:\Users\mamr4\OneDrive - Stony Brook University\Master thesis\Data\g-test-2.csv",old_handel=r"C:\Users\mamr4\OneDrive\Documents\Master thesis\Data\list of molecules used in Xiangue and Jesus paper.xlsx")
+g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"C:\Users\mamr4\OneDrive - Stony Brook University\Master thesis\Data\g-test-2.csv",old_handel=r"data/list of molecules used in Xiangue and Jesus paper.csv")
 gw_expand=gw_expand[~gw_expand['Molecule'].isin(['AgBi','Hg2','XeCl','HgCl','HgBr',"HgI"])]
 gw_expand['mu^(1/2)']=(np.sqrt(gw_expand['Reduced mass']))
 gw_expand['ln(mu^(1/2))']=np.log(np.sqrt(gw_expand['Reduced mass']))
@@ -446,4 +446,4 @@ for index in r_y_test_preds:
         re_test_std.append(((r_test_stds[index][0])))
         print(index)
 testing_results = pd.DataFrame(list(zip(test_molecules, true_values,re_test_preds,re_test_std)), columns =['Molecule', 'true $R_e \AA$','Predicted $R_e \AA$)','error bars'])
-testing_results.to_csv(r'C:\Users\mamr4\OneDrive - Stony Brook University\Master thesis\Computational\Results\ML results\w4\testing_results.csv')
+testing_results.to_csv(r'r2/r2_testing_results.csv')
