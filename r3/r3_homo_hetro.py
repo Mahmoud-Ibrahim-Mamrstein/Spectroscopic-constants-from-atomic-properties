@@ -35,7 +35,7 @@ class MyGPR(GaussianProcessRegressor):
         return theta_opt, func_min
 def load(handel,old_handel):
     dfe=pd.read_csv(handel,index_col=None)
-    df1=pd.read_csv(r"/gpfs/home/maaibrahim/gpr/peridic.csv",index_col=None)
+    df1=pd.read_csv(r"data/peridic.csv",index_col=None)
     dfe= dfe.loc[:, ~dfe.columns.str.contains('^Unnamed')]
     nul=[np.NaN]*len(dfe.Molecule)
     for char in ['e1','e2']:
