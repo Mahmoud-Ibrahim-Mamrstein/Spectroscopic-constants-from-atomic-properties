@@ -38,7 +38,7 @@ class MyGPR(GaussianProcessRegressor):
 --------------------------------------------
 def load(handel,old_handel):
     dfe=pd.read_csv(handel,index_col=None)
-    df1=pd.read_csv(r"C:\Users\mamr4\OneDrive\Documents\Master thesis\Data\peridic.csv",index_col=None)
+    df1=pd.read_csv(r"data/peridic.csv",index_col=None)
     dfe= dfe.loc[:, ~dfe.columns.str.contains('^Unnamed')]
     nul=[np.NaN]*len(dfe.Molecule)
     for char in ['e1','e2']:
@@ -419,7 +419,7 @@ def hyper_parameters(target,handel):
     #hyper_group_0.to_csv(handel+'\\'+' '+target+'results per split grouped and averged.csv', index=True)
     return hyper, hyper_group_1, hyper_group_0
 -------------------------------------------------------------
-g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"C:\Users\mamr4\OneDrive - Stony Brook University\Master thesis\Data\g-test-2.csv",old_handel=r"C:\Users\mamr4\OneDrive\Documents\Master thesis\Data\list of molecules used in Xiangue and Jesus paper.xlsx")
+g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"data/g-test-2.csv",old_handel=r"data/list of molecules used in Xiangue and Jesus paper.csv")
 gw_expand['ln(Re (\AA))']=np.log(gw_expand['Re (\AA)'])  #ln of the target
 gw_expand['mu^(1/2)']=np.sqrt(gw_expand['Reduced mass'])
 gw_expand['mu^(-1/2)']=1/np.sqrt(gw_expand['Reduced mass'])
