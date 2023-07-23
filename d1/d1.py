@@ -191,8 +191,8 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
     #print(loo.get_n_splits(data))
     s=0
 
-    for train_index, test_index in loo.split(data):
-    #for train_index, test_index in mcs.split(data,strata):
+    #for train_index, test_index in loo.split(data):
+    for train_index, test_index in mcs.split(data,strata):
         #print(train_index)
         re_train_set1 = data.iloc[train_index]
         re_train_set1['ind']=train_index
@@ -224,8 +224,8 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
         trval[str(s)]['length scale']=1
         trval[str(s)]['noise level']=1
         
-        if re_test_set['Molecule'].tolist()[0] not in ['InBr','MoC','NbC','NiC','NiO','NiS','PbI','PdC','RuC','SnI','UO','WC','YC','ZnBr','ZnCl','WO','ZnI','ZnF','HgBr','HgI','HCl','DCl']:
-            continue
+        #if re_test_set['Molecule'].tolist()[0] not in ['InBr','MoC','NbC','NiC','NiO','NiS','PbI','PdC','RuC','SnI','UO','WC','YC','ZnBr','ZnCl','WO','ZnI','ZnF','HgBr','HgI','HCl','DCl']:
+         #   continue
       
         
         
