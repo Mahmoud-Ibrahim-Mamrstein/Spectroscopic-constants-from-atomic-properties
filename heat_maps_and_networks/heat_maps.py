@@ -38,7 +38,7 @@ class MyGPR(GaussianProcessRegressor): #MyGPR(GaussianProcessRegressor) class sp
 ------------------------------------------------------------------------------
 def load(handel,old_handel): #Load is a function that takes the handles of the two CSV files containing the full data set (including old and new data) and the data set containing the data from Liu et al. 2021 and returns multiple pandas data frames of the data as defined below
     dfe=pd.read_csv(handel,index_col=None)
-    df1=pd.read_csv(r"/gpfs/home/maaibrahim/gpr/peridic.csv",index_col=None) #Includes information from the periodic table for each element
+    df1=pd.read_csv(r"data/peridic.csv",index_col=None) #Includes information from the periodic table for each element
     dfe= dfe.loc[:, ~dfe.columns.str.contains('^Unnamed')]
     nul=[np.NaN]*len(dfe.Molecule)
     for char in ['e1','e2']: #creating two columns that take in the number of electrons of the elements compromising the diatomic molecules
@@ -404,7 +404,7 @@ def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,han
     results.to_csv(handle, index=True)  
     return results
 ------------------------------------------------------------------------------
-g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"/gpfs/home/maaibrahim/gpr/g.csv",old_handel=r"/gpfs/home/maaibrahim/gpr/list of molecules used in Xiangue and Jesus paper.csv")
+g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"data/g.csv",old_handel=r"data/list of molecules used in Xiangue and Jesus paper.csv")
 gw_expand=gr_expand[~gr_expand['Molecule'].isin(['XeCl','AgBi','Hg2','HgCl'])] # the molecules XeCl, AgBi , Hg2 and HgCl has been removed due to uncertainties in their experimental spectroscopic constants values 
 gw_expand['wcat']=gw_expand['Re (\AA)'] # gw_expand['wcat'] is used to define strata for the process of stratified sampling
 gw_expand_unique=np.unique(gw_expand['wcat'])
