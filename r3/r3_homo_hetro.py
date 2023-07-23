@@ -432,6 +432,18 @@ r_y_train_pred=r_y_train_pred_log
 r_y_test_pred=r_y_test_pred_log
 print(re_test_set[target],r_y_test_pred)
 ------------------------------------------------------------------------------
+g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"data/g.csv",old_handel=r"data/list of molecules used in Xiangue and Jesus paper.csv")
+gw_expand=gw_expand[~gw_expand['Molecule'].isin(['XeCl','AgBi','Hg2','HgCl'])] #Remmove molecules with uncertain data
+gw_expand['wcat']=gw_expand['Re (\AA)']
+gw_expand_unique=np.unique(gw_expand['wcat'])
+ind=[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,303]
+print(len(gw_expand_unique))
+for i in range(len(ind)-1):
+    gw_expand['wcat'].where((gw_expand['wcat']>gw_expand_unique[ind[i+1]])|(gw_expand['wcat']<=gw_expand_unique[ind[i]]),gw_expand_unique[ind[i]],inplace=True)
+gw_expand['mu^(1/2)']=(np.sqrt(gw_expand['Reduced mass']))
+gw_expand['ln(mu^(1/2))']=np.log(np.sqrt(gw_expand['Reduced mass']))
+gw_expand['ln(w)']=np.log(gw_expand['omega_e (cm^{-1})'])
+------------------------------------------------------------------------------
 df=gw_expand[gw_expand['atom1']==gw_expand['atom2']]
 fig, ax =pyplot.subplots(figsize=(7,7))
 pyplot.xticks(fontsize=14)
@@ -455,9 +467,9 @@ ax.legend(prop={'size': 12})
 pyplot.xlabel('True $Re (\AA)$',fontdict={'size': 16})
 pyplot.ylabel('Predicted $Re (\AA)$',fontdict={'size': 16})
 #return re_train_preds,re_train_std,re_test_preds,re_test_std,out
-pyplot.savefig('experiment2_homo_from_hetro.svg')
+pyplot.savefig('r3_homo_from_hetro.svg')
 for i in range(len(r_y_test_pred)):
     if abs(df['Re (\AA)'].tolist()[i]-r_y_test_pred[i])<0.1:
         continue
     ax.annotate(df['Molecule'].tolist()[i], (df['Re (\AA)'].tolist()[i], r_y_test_pred[i]))
-pyplot.savefig('experiment2_homo_from_hetro_ann.svg')
+pyplot.savefig('r3_homo_from_hetro_ann.svg')
