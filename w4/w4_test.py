@@ -37,7 +37,7 @@ class MyGPR(GaussianProcessRegressor): #MyGPR(GaussianProcessRegressor) class sp
         return theta_opt, func_min
 def load(handel,old_handel): #Load is a function that takes the handles of the two CSV files containing the full data set (including old and new data) and the data set containing the data from Liu et al. 2021 and returns multiple pandas data frames of the data as defined below
     dfe=pd.read_csv(handel,index_col=None)
-    df1=pd.read_csv(r"/gpfs/home/maaibrahim/gpr/peridic.csv",index_col=None) #Includes information from the periodic table for each element
+    df1=pd.read_csv(r"data/peridic.csv",index_col=None) #Includes information from the periodic table for each element
     dfe= dfe.loc[:, ~dfe.columns.str.contains('^Unnamed')]
     nul=[np.NaN]*len(dfe.Molecule)
     for char in ['e1','e2']: #creating two columns that take in the number of electrons of the elements compromising the diatomic molecules
@@ -412,7 +412,7 @@ def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,han
     results.to_csv(handle, index=True)  
     return results
   
-g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"C:\Users\mamr4\OneDrive - Stony Brook University\Master thesis\Data\g-test-2.csv",old_handel=r"C:\Users\mamr4\OneDrive\Documents\Master thesis\Data\list of molecules used in Xiangue and Jesus paper.xlsx")
+g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"data/g-test-2.csv",old_handel=r"data/list of molecules used in Xiangue and Jesus paper.csv")
 gw_expand=gw_expand[~gw_expand['Molecule'].isin(['AgBi','Hg2','XeCl','HgCl','HgBr',"HgI"])]
 gw_expand['mu^(1/2)']=(np.sqrt(gw_expand['Reduced mass']))
 gw_expand['ln(mu^(1/2))']=np.log(np.sqrt(gw_expand['Reduced mass']))
