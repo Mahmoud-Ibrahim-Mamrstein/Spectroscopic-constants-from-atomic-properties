@@ -36,7 +36,7 @@ class MyGPR(GaussianProcessRegressor):
         return theta_opt, func_min
 def load(handel,old_handel):
     dfe=pd.read_csv(handel,index_col=None)
-    df1=pd.read_csv(r"/gpfs/home/maaibrahim/gpr/peridic.csv",index_col=None)
+    df1=pd.read_csv(r"data/peridic.csv",index_col=None)
     dfe= dfe.loc[:, ~dfe.columns.str.contains('^Unnamed')]
     nul=[np.NaN]*len(dfe.Molecule)
     for char in ['e1','e2']:
@@ -405,7 +405,7 @@ def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,han
     results=pd.DataFrame.from_dict(results) 
     results.to_csv(handle, index=True)  
     return results
-g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"/gpfs/home/maaibrahim/gpr/g.csv",old_handel=r"/gpfs/home/maaibrahim/gpr/list of molecules used in Xiangue and Jesus paper.csv")
+g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"data/g.csv",old_handel=r"data/list of molecules used in Xiangue and Jesus paper.csv")
 gw_expand=gw_expand[~gw_expand['Molecule'].isin(['AgBi','Hg2','XeCl','HgCl'])] #Remmove molecules with uncertain data
 
 gw_expand["ln(omega_e (cm^{-1}))"]=np.log(gw_expand["omega_e (cm^{-1})"])
