@@ -1,0 +1,5 @@
+,"$R_e$ LR results with features $p_1+p_2$, $g_1+g_2$, $\ln(Z_1 	imes Z_2)$, $\ln(\omega_e)$"
+$r%$,3.824691622236614
+MAE,0.10996590469978428
+Number of molecules in the whole data set,310
+RMSE,0.1426074518267144
