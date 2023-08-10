@@ -51,10 +51,7 @@ lan_act: Indicate the use of group 3 as the group for both lanthanides and actin
 
 iso: indicates of the use of 0 as the group number of Deuterium and -1 as the group number of Tritium.
 
-contains data used for training and validation. References are provided for each molecule experimental data \
-g-test-2.csv: contains data used for training and validation in addition to data used for testing. References are provided for each molecule experimental data \
-list of molecules used in Xiangue and Jesus paper.csv: A list of molecules used in Liu et al., 2021 \
-peridic.csv : contains information from the periodic table for each element    
+    
  ## References
 <a id="1">[1]</a> 
 Klaus-Peter Huber. Molecular spectra and molecular structure: IV. Constants of diatomic
