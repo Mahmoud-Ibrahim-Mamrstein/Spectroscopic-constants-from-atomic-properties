@@ -1,9 +1,7 @@
 # Model r1
 
 Model r1 is the same as in Liu et al.[[1]](#1). A GPR model with a Matern 1/2 kernel and with groups and periods of the constituent atoms as features. We explicitly express the model's prior mean functions as linear functions in the groups and periods of the diatomic molecules' constituent atoms. \
-\begin{equation}
-   m_{r1-r2} = \beta_0^{r1-r2}+\beta_1^{r1-r2}(p_1+p_2) + \beta_2^{r1-r2}(g_1+g_2),
-\end{equation}
+$$m_{r1-r2} = \beta_0^{r1-r2}+\beta_1^{r1-r2}(p_1+p_2) + \beta_2^{r1-r2}(g_1+g_2)$$
 \
 where  $\beta_k^{r1-r2}$, $k \in \{0,1,2\}$ are the linear coefficients of  $m_{r1-r2}$.
 ## Files description 
