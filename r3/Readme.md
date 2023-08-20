@@ -1,8 +1,7 @@
 # Model r3
 
 Model r3 employs the groups and periods of the diatomic molecules constiuent atoms and the reduced mass of the molecule. In addition model r3 incorporates $\ln({\omega_e}$) in the prior mean function. 
-$$m_{r3-r4} = \beta_0^{r3-r4}+\beta_1^{r3-r4}(p_1+p_2) + \beta_2^{r3-r4}(g_1+g_2) \\ + \beta_3^{r3-r4} \ln{(\mu^{1/2}})+\beta_4^{r3-r4} \ln{(\omega_e)}, 
-    \end{gathered} $$
+$$m_{r3-r4} = \beta_0^{r3-r4}+\beta_1^{r3-r4}(p_1+p_2) + \beta_2^{r3-r4}(g_1+g_2)+\beta_3^{r3-r4} \ln{(\mu^{1/2}})+\beta_4^{r3-r4} \ln{(\omega_e)}$$
 where $\beta_k^{r3-r4}$, $k \in \{0,1,2,3,4\}$ are linear coefficients of $m_{r3-r4}$.
 
 ## Files description 
