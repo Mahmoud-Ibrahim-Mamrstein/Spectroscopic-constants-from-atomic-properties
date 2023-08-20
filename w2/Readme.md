@@ -1,7 +1,10 @@
-w2.py : python script of training and validation of the w2 model described in the manuscript \
-w2_gr_expand_pred.csv : A csv file containing prediction of the w2 model \
-w2_learninig_curves.csv: A csv file containing a statistical summary of each step used for producing the learning curves. To get these results w2.py was run several times with different training data portions and for 500 MC-CV splits \ 
-w2_split_stat.csv : A csv file that contains a statistical summary of each MC-CV step \
-stat_summ: statistical summary of the model 
-w2_test.py : python script for testing the w2 model
-w2_testing_results.csv : a csv file containing testing results for the w2 model 
+## Files description 
+[w2.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/w2/w2.ipynb) : A Jupiter notebook of the w2 model\
+[w2_gr_expand_pred.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/w2/w2_gr_expand_pred.csv): A csv file containing prediction of the w2 model. Columns we_test_preds, we_test_std, we_train_preds, and we_train_std include the testing predictions and standard deviations and training predictions and standard deviations for each molecule in the training validation set.\
+[w2_learninig_curves.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/19d4c9834a2bb9521bcfde277eb46e59ded7ae3a/w2/w2_learning_curves.csv): A csv file containing a statistical summary of each step used for producing the learning curves. To get these results the ml_model function in [w2.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/w2/w2.ipynb) was run several times with different testing set sizes, each was run for 500 MC-CV splits. Column 'portion_of_data_set' indicate the portion used for training the model. \
+[w2_split_stat.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/9ba61b3b2dad50f9deddf955f9303b0adc310fae/w2/w2_split_stat.csv): A csv file containing a statistical summary of each MC-CV step.\
+[stat_summ](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b4a0b821ac4d3341ebb8f74178527c816e036641/w2/stat_summ.csv): statistical summary of the model. \
+[r2_test.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/60c2ff448d4a4fe9cec11760452be0c2cb8d1cfd/w2/w2_test.ipynb): code to test model w2 \
+[w2_testing_results.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/60c2ff448d4a4fe9cec11760452be0c2cb8d1cfd/w2/w2_testing_results.csv): Contains testing results
+
+ 
