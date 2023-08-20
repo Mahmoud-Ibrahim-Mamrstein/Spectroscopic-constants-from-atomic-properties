@@ -1,3 +1,10 @@
+# Model r3
+
+Model r3 employs the groups and periods of the diatomic molecules constiuent atoms and the reduced mass of the molecule. In addition model r3 incorporates $\ln({\omega_e}$) in the prior mean function. 
+$$m_{r3-r4} = \beta_0^{r3-r4}+\beta_1^{r3-r4}(p_1+p_2) + \beta_2^{r3-r4}(g_1+g_2) \\ + \beta_3^{r3-r4} \ln{(\mu^{1/2}})+\beta_4^{r3-r4} \ln{(\omega_e)}, 
+    \end{gathered} $$
+where $\beta_k^{r3-r4}$, $k \in \{0,1,2,3,4\}$ are linear coefficients of $m_{r3-r4}$.
+
 ## Files description 
 [r3.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/r3/r3.ipynb) : A Jupiter notebook of the r3 model\
 [r3_gr_expand_pred.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/r3/r3_gr_expand_pred.csv): A csv file containing prediction of the r3 model. Columns re_test_preds, re_test_std, re_train_preds, and re_train_std include the testing predictions and standard deviations and training predictions and standard deviations for each molecule in the training validation set.\
