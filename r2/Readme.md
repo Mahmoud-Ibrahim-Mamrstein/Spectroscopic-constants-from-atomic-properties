@@ -1,3 +1,9 @@
+
+# Model r2
+
+A GPR model with a Matern 3/2 kernel and with groups and periods of the constituent atoms and the reduced mass of the molecule as features. We explicitly express the model's prior mean functions as linear functions in the groups and periods of the diatomic molecules' constituent atoms.
+$$m_{r1-r2} = \beta_0^{r1-r2}+\beta_1^{r1-r2}(p_1+p_2) + \beta_2^{r1-r2}(g_1+g_2)$$
+where  $\beta_k^{r1-r2}$, $k \in \{0,1,2\}$ are the linear coefficients of  $m_{r1-r2}$.
 ## Files description 
 [r2.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/r2/r2.ipynb) : A Jupiter notebook of the r2 model\
 [r2_gr_expand_pred.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/r2/r2_gr_expand_pred.csv) : A csv file containing prediction of the r1 model. Columns re_test_preds, re_test_std, re_train_preds, and re_train_std include the testing predictions and standard deviations and training predictions and standard deviations for each molecule in the training validation set.\
