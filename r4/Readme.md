@@ -1,5 +1,5 @@
 # Model r4
-model r4 uses $\ln{(\omega_e)}$ as a feature along with the reduced mass, periods, and groups of the constituent atoms. Both models have a prior mean given by
+model r4 uses $\ln{(\omega_e)}$ as a feature along with the reduced mass, periods, and groups of the constituent atoms in a Matern 3/2 kernel. Both models have a prior mean given by
 $$m_{r3-r4} = \beta_0^{r3-r4}+\beta_1^{r3-r4}(p_1+p_2) + \beta_2^{r3-r4}(g_1+g_2) + \beta_3^{r3-r4} \ln{(\mu^{1/2}})+\beta_4^{r3-r4} \ln{(\omega_e)}$$
 where $\beta_k^{r3-r4}$, $k \in \{0,1,2,3,4\}$ are linear coefficients of $m_{r3-r4}$.
 ## Files description 
