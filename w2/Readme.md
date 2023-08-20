@@ -1,3 +1,7 @@
+# Model w2
+model w2 only includes groups and periods of the constituent atoms and the reduced mass of the molecule as features within a Matern 3/2 kernel. The prior mean of model w2 is given by 
+$$m_{w2} =\beta_0^{w2}+\beta_1^{w2}(p_1+p_2) + \beta_2^{w2}(g_1+g_2)+\beta_3^{w2} \ln{(\mu^{1/2})}$$
+where $\beta_k^{w2}$, $k \in \{0,1,2,3\}$ are linear coefficients.
 ## Files description 
 [w2.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/w2/w2.ipynb) : A Jupiter notebook of the w2 model\
 [w2_gr_expand_pred.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/w2/w2_gr_expand_pred.csv): A csv file containing prediction of the w2 model. Columns we_test_preds, we_test_std, we_train_preds, and we_train_std include the testing predictions and standard deviations and training predictions and standard deviations for each molecule in the training validation set.\
