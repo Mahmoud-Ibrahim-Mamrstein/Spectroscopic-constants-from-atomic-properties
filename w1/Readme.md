@@ -6,9 +6,6 @@ Model w1 is the best-performing model of Liu et al.[[1]](#1). It is characterize
 [w1_learninig_curves.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/19d4c9834a2bb9521bcfde277eb46e59ded7ae3a/w1/w1_learning_curves.csv): A csv file containing a statistical summary of each step used for producing the learning curves. To get these results the ml_model function in [w1.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/w1/w1.ipynb) was run several times with different testing set sizes, each was run for 500 MC-CV splits. Column 'portion_of_data_set' indicate the portion used for training the model. \
 [w1_split_stat.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/9ba61b3b2dad50f9deddf955f9303b0adc310fae/w1/w1_split_stat.csv): A csv file containing a statistical summary of each MC-CV step.\
 [stat_summ](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b4a0b821ac4d3341ebb8f74178527c816e036641/w1/stat_summ.csv): statistical summary of the model. \
-[w1_test.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/60c2ff448d4a4fe9cec11760452be0c2cb8d1cfd/w1/w1_test.ipynb): code to test model w1 \
-[w1_testing_results.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/60c2ff448d4a4fe9cec11760452be0c2cb8d1cfd/w1/w1_testing_results.csv): Contains testing results
-
 
 ## References
 <a id="1">[1]</a> 
