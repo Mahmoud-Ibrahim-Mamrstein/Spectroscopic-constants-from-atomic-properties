@@ -6,33 +6,21 @@ We present a machine-learning approach toward predicting spectroscopic constants
 ## Code and Data 
 In each repository, there is a Readme file that summarizes the model and describes its file contents. All the codes in the repository are presented in Jupyter notebooks and documented via markdown cells and comments. Python 3.9.7 and conda 23.1.0 were used with the following packages
 
-Name                    Version                   Build  Channel
-
-anaconda                  custom                   py39_1 
-
-pandas                    1.4.2            py39hd77b12b_0
-
-numpy                     1.21.5           py39h7a0a035_1
-
-numpy-base                1.21.5           py39hca35cd5_1
-
-numpydoc                  1.2                pyhd3eb1b0_0
-
-scikit-learn              1.0.2            py39hf11a4ad_1
-
-scikit-learn-intelex      2021.5.0         py39haa95532_0
-
-matplotlib                3.5.1            py39haa95532_1
-
-matplotlib-base           3.5.1            py39hd77b12b_1
-
-matplotlib-inline         0.1.2              pyhd3eb1b0_2
-
-matplotlib-venn           0.11.9                   pypi_0    pypi
-
-scipy                     1.7.3            py39h0a974cb_0
-
-seaborn                   0.11.2             pyhd3eb1b0_0
+Name|                  Version|                  Build|                  Channel|
+--------|               --------|                --------|              --------|
+anaconda|                  custom|                   py39_1|                    | 
+pandas|                    1.4.2|            py39hd77b12b_0|                    |
+numpy|                     1.21.5|           py39h7a0a035_1|
+numpy-base|                1.21.5|           py39hca35cd5_1|                    |
+numpydoc|                  1.2|                pyhd3eb1b0_0|
+scikit-learn|              1.0.2|            py39hf11a4ad_1|                    |
+scikit-learn-intelex|      2021.5.0|         py39haa95532_0|
+matplotlib|                3.5.1|            py39haa95532_1|                    |
+matplotlib-base|           3.5.1|            py39hd77b12b_1|                    |
+matplotlib-inline|         0.1.2|              pyhd3eb1b0_2|                    |
+matplotlib-venn|           0.11.9|                   pypi_0|    pypi|
+scipy|                     1.7.3|            py39h0a974cb_0|                    |
+seaborn|                   0.11.2|             pyhd3eb1b0_0|                    |
 
 All the data are contained in csv files, the data is described in [data/Readme.md](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/03d76f1438373fbb8f8a21b718b0947ffcfbd3b5/data/Readme.md) 
 ## Gaussian process regression
