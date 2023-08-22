@@ -71,7 +71,7 @@ $D_O^O$ (eV): Dissociation energy
 
 $IP$ (eV): Ionozation potential
 
-lan_act: Indicate the use of group 3 as the group for both lanthanides and actinides
+lan_act: Indicates the use of group 3 as the group for both lanthanides and actinides
 
 iso: indicates of the use of 0 as the group number of Deuterium and -1 as the group number of Tritium.
  
