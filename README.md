@@ -57,7 +57,7 @@ $T_e$  (cm $^{-1}$):  minimum electronic energy
 
 $\omega_e$ (cm $^{-1}$): vibrational constant – first term
 
-$\omega_eX_e$ (cm $^{-1}$): vibrational constant – second term 
+$\omega_ex_e$ (cm $^{-1}$): vibrational constant – second term 
 
 $B_e$ (cm $^{-1}$): rotational constant in equilibrium position
 
