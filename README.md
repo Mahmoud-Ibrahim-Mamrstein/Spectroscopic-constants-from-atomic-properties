@@ -5,8 +5,10 @@ We present a machine-learning approach toward predicting spectroscopic constants
 
 ## Code and Data 
 In each repository, there is a Readme file that summarizes the model and describes its file contents. All the codes in the repository are presented in Jupyter notebooks and documented via markdown cells and comments. Python 3.9.7 and conda 23.1.0 were used with the following packages
-Name                    Version                   Build  Channel/
-anaconda                  custom                   py39_1/
+Name                    Version                   Build  Channel
+
+anaconda                  custom                   py39_1 
+
 pandas                    1.4.2            py39hd77b12b_0/
 numpy                     1.21.5           py39h7a0a035_1/
 numpy-base                1.21.5           py39hca35cd5_1/
