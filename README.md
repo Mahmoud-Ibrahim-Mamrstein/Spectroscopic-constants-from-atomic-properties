@@ -3,8 +3,6 @@
 
 We present a machine-learning approach toward predicting spectroscopic constants based on atomic properties. After collecting spectroscopic information on diatomics and generating an extensive database, we employ Gaussian process regression to identify the most efficient characterization of molecules to predict the equilibrium distance, vibrational harmonic frequency, and dissociation energy. As a result, we show that it is possible to predict the equilibrium distance with an absolute error of 0.04 Å and vibrational harmonic frequency with an absolute error of 36 $\text{cm}^{-1}$, including only atomic properties. These results can be improved by including prior information on molecular properties leading to an absolute error of 0.02 Å and 28 $\text{cm}^{-1}$ for the equilibrium distance and vibrational harmonic frequency, respectively. In contrast, the dissociation energy is predicted with an absolute error $\lesssim 0.4$ eV. Alongside these results, we prove that it is possible to predict spectroscopic constants of homonuclear molecules from the atomic and molecular properties of heteronuclear. Finally, based on our results, we present a new way to classify diatomic molecules beyond chemical bond properties.
 
-## Code and data description as in the manuscript 
-In each repository, there is a Readme file that summarizes the model and describes its file contents. All the codes in the repository are presented in Jupyter notebooks and documented via markdown cells and comments. All the data are contained in csv files, the data is described in [data/Readme.md](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/03d76f1438373fbb8f8a21b718b0947ffcfbd3b5/data/Readme.md)   
 ## Gaussian process regression
 We define our data set $D=\{(\textbf{x}_i,y_i)|i=1,\cdot\cdot\cdot,n\}$, where $\textbf{x}_i$ is a feature vector of some dimension $D$ associated with the $i$-th element of the dataset, $y_i$ is a scalar target label, and $n$ is the number of observations, i.e., the number of elements in the dataset. The set of all feature vectors and corresponding labels can be grouped in the random variables $X$ and $\textbf{y}$, respectively, where $X=(\textbf{x}_1,\cdot\cdot\cdot,\textbf{x}_n)$ and $\textbf{y}=(y_1,\cdot\cdot\cdot,y_n)$. Here, $\textbf{y}$ consists of values of molecular properties to be learned. $y_i$ is $R_e$, $\omega_e$, or $D_0^0$ of the $i$-th molecule, whereas $\textbf{x}_i$ is a vector containing atomic or molecular properties of the same molecule.
 
@@ -24,4 +22,22 @@ To design a model, we choose an $X$ suitable to learn $\textbf{y}$ through a GPR
 
 We adopt a Monte Carlo (MC) splitting scheme to generate the CV splits. Using the MC splitting scheme, we expose the models to various data compositions. To generate a single split, we use stratified sampling. First, we stratify the training set into smaller strata based on the target label. Stratification will be such that molecules in each stratum have values within some lower and upper bounds of the target label (spectroscopic constant) of interest. Then, we sample the validation set so that each stratum is represented. Stratified sampling minimizes the change in the proportions of the data set composition upon MC splitting, ensuring that the trained model can make predictions over the full range of the target variable. Using the Monte Carlo splitting scheme with cross-validation (MC-CV) allows our models to train on $D_{\text{tv}}$ in full, as well as make predictions for each molecule in $D_{\text{tv}}$. In each iteration, $D_{\text{valid}}$ simulates the testing set; thus, by the end of the MC-CV process, it provides an evaluation of the model performance against ~ 90% of the molecules in the data set before the final testing stage. 
 
+## Code and Data 
+In each repository, there is a Readme file that summarizes the model and describes its file contents. All the codes in the repository are presented in Jupyter notebooks and documented via markdown cells and comments. Python 3.9.7 and conda 23.1.0 were used with the following packages
+Name                    Version                   Build  Channel
+anaconda                  custom                   py39_1
+pandas                    1.4.2            py39hd77b12b_0
+numpy                     1.21.5           py39h7a0a035_1
+numpy-base                1.21.5           py39hca35cd5_1
+numpydoc                  1.2                pyhd3eb1b0_0
+scikit-learn              1.0.2            py39hf11a4ad_1
+scikit-learn-intelex      2021.5.0         py39haa95532_0
+matplotlib                3.5.1            py39haa95532_1
+matplotlib-base           3.5.1            py39hd77b12b_1
+matplotlib-inline         0.1.2              pyhd3eb1b0_2
+matplotlib-venn           0.11.9                   pypi_0    pypi
+scipy                     1.7.3            py39h0a974cb_0
+seaborn                   0.11.2             pyhd3eb1b0_0
+
+All the data are contained in csv files, the data is described in [data/Readme.md](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/03d76f1438373fbb8f8a21b718b0947ffcfbd3b5/data/Readme.md) 
 ![Alt text](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/62b29764facc0fae2687daa4800a927e7ef57a21/MCCV.svg)
