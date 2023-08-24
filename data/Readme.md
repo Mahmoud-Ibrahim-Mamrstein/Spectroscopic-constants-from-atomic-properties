@@ -1,3 +1,37 @@
+## Data description
+[g.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g.csv): contains data used for training and validation. References are provided for each molecule experimental data \
+[g-test-2.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g-test-2.csv): contains data used for training and validation in addition to data used for testing. References are provided for each molecule experimental data \
+[list of molecules used in Xiangue and Jesus paper.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/ece9ce778381e0e7a83e75dc29c02950d5a4bd62/data/list%20of%20molecules%20used%20in%20Xiangue%20and%20Jesus%20paper.csv): A list of molecules used in Liu et al., 2021 \
+[peridic.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/ece9ce778381e0e7a83e75dc29c02950d5a4bd62/data/peridic.csv): contains information from the periodic table for each element
+
+[g.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g.csv) and [g-test-2.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g-test-2.csv): A1 and A2 columns contain the mass number of the two atoms making up a molecule. 
+
+
+[all_new_data.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/8fb6627a3cf221a32150bc9b43dcf659b3174bb7/data/all_new_data.csv): Conssists of all the newly gatherd data with refrences and authors' notes
+Electronic state: electronic state and/or symmetry symbol
+
+$T_e$  (cm $^{-1}$):  minimum electronic energy 
+
+$\omega_e$ (cm $^{-1}$): vibrational constant – first term
+
+$\omega_ex_e$ (cm $^{-1}$): vibrational constant – second term 
+
+$B_e$ (cm $^{-1}$): rotational constant in equilibrium position
+
+$\alpha_e$ (cm $^{-1}$): rotational constant – first term
+
+$D_e$ ($10^{-7}$ cm $^{-1}$): 	centrifugal distortion constant
+
+$R_e$ (\AA): internuclear distance
+
+$D_O^O$ (eV): Dissociation energy
+
+$IP$ (eV): Ionozation potential
+
+lan_act: Indicates the use of group 3 as the group for both lanthanides and actinides
+
+iso: indicates of the use of 0 as the group number of Deuterium and -1 as the group number of Tritium.
+ 
 ## Data gathering
 
 In this project spectroscopic constants of diatomic molecules have been gathered from various published books, papers, and online accessible databases (e.g, [The Diatomic Molecular Spectroscopy Database](https://rios.mp.fhi.mpg.de/index.php) and [NIST Chemistry WebBook](https://webbook.nist.gov/chemistry/))
