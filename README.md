@@ -38,6 +38,8 @@ Other Heteronuclear molecules were gathered from various published papers. Most 
 Experimental data gathered from cited books, papers, or online accessible databases usually does not suffer from data entry errors. However, careful reading of the text describing the raw data was required. Footnotes in the Huber and Herzberg book were useful in eliminating some of the molecules or initiating a search to find more recent experimental results. For instance, AgBi was eliminated from the dataset due to the footnote regarding the calculated value of $r_e$ from the rotational constants. The $\omega_e$ value of HgH was found to be updated several times to higher values than the one found in the Huber and Herzberg book [[1]](#1), [[4]](#4), [[5]](#5). We have found some discrepancies in the experimental values of some molecules for instance $\text{Hg}_2$ [[2]](#2), [[3]](#3) and other cases discussed in detail in the manuscript (e.g, AuF and ZnBr). To overcome the potential susceptibility of the data to errors stemming from variations in experimental techniques or conditions during the measurement of spectroscopic constants, we try to find various experimental studies that agree on the same value of a spectroscopic constant. In case there is a discrepancy in the experimental value of some spectroscopic constants of some molecule (e.g., AuF and ZnBr) we turn to theoretical studies to gain an insight about the most probable value. we were careful in reviewing such cases where there are discrepancies among various reported experimental results to the best of our knowledge, but this exercise requires continuous revisions of the data and monitoring of the most recent experimental studies. The following histogram shows a comparison in the number of references per publishing date between [The Diatomic Molecular Spectroscopy Database](https://rios.mp.fhi.mpg.de/index.php) v.01 and v.02. The figure shows that in v.02 of the database, a more careful review of various published experimental and theoretical studies and gathering of up-to-date data was a major priority for the authors.   
 ![Alt text](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/71bebc2184c9a4746bf4c106f14a8287386f23cf/refrences%20_compare.svg)
 
+During the development of this work, we have realized that, historically, uncertainties about the dissociation energy experimental values had restrained the development of empirical relations connecting them to other atomic and molecular properties and have led several authors to focus their efforts on the $\omega_e$ - $R_e$ relation [[8]](#8), [[9]](#9), [[10]](#10). The data used to train model d1 is primarily collected from Huber and Herzberg's constants of diatomic molecules, first published in 1979 [[1]](#1).More recently, Fu et al. used an ML model to predict dissociation energies for diatomic molecules, exploiting microscopic and macroscopic properties[[6]](#6). They tested their model against CO and highlighted that the reported experimental dissociation energy in the literature had increased by 100 kcal/mol over the course of 78 years from 1936 to 2014 [[6]](#6), [[12]](#12), [[12]](#12) (in Table 1 of Ref.[[6]](#6). Unlike experimental values of $R_e$ and $\omega_e$, since 1980, a significant number of $D_0^0$ values have been updated [[7]](#7). To name a few, MgD, MgBr, MgO, CaCl. CaO, SrI, SrO, TiS, NbO, AgF, AgBr, and BrF all have their experimental values updated with at least  $\pm 2.3 \ \text{kcal/mol}$ difference from their values in Huber and Herzberg [[1]](#1), [[7]](#7). Moreover, for some molecules, the uncertainties in $D_0^0$ experimental values are not within chemical accuracy. For instance, MgH, CaCl, CaO, CaS, SrH, BaO, BaS, ScF, Tif, NbO, and BrF have uncertainties ranging from $\pm 1 \ \text{kcal/mol} \ \text{up to} \pm 8 \  \text{kcal/mol}$ [[7]](#7). Unlike $R_e$ and $\omega_e$, it is most likely that uncertainties around $D_0^0$ experimental values drive from various systematic effects.
+
 
 To avoid data entry errors, the data set has been reviewed several times during the project by the authors using standard techniques like plotting the data, looking at the distributions of the data points and directly looking at single data points in the CSV files. The data is clean to the best of the author's knowledge.
 
@@ -110,6 +112,20 @@ Stefanov, B., 1985. Comment: On the equilibrium of Hg2 molecule. The Journal of 
 Hilpert, K. and Jones, R.O., 1985. Reply to ‘‘Comment: On the equilibrium of Hg2 molecule’’. The Journal of Chemical Physics, 83(5), pp.2622-2622.
 
 
-<a id="3">[4]</a>  J. Dufayard, B. Majournat and O. Nedelec, Chem. Phys. 128, 537 (1988).
+<a id="4">[4]</a>  J. Dufayard, B. Majournat and O. Nedelec, Chem. Phys. 128, 537 (1988).
 
-<a id="3">[5]</a> W. C. Stwalley, J. Chem. Phys. 63, 3062 (1975)
+<a id="5">[5]</a> W. C. Stwalley, J. Chem. Phys. 63, 3062 (1975)
+
+<a id="6">[6]</a> Fu, J., Wan, Z., Yang, Z., Liu, L., Fan, Q., Xie, F., Zhang, Y. and Ma, J., 2022. Combining ab initio and machine learning method to improve the prediction of diatomic vibrational energies. International Journal of Quantum Chemistry, 122(18), p.e26953.
+
+<a id="7">[7]</a> Luo, Y.R., 2007. Comprehensive handbook of chemical bond energies. CRC press.
+
+<a id="8">[8]</a>Badger, R.M., 1934. A relation between internuclear distances and bond force constants. The Journal of Chemical Physics, 2(3), pp.128-131.
+
+<a id="9">[9] Jhung, K.S., Kim, I.H., Oh, K.H., Hahn, K.B. and Jhung, K.H.C., 1990. Universal nature of diatomic potentials. Physical Review A, 42(11), p.6497.
+
+<a id="10">[10] The determination of internuclear distances and of dissociation energies from force constants
+
+<a id="11">[11] Kȩpa, R., Ostrowska-Kopeć, M., Piotrowska, I., Zachwieja, M., Hakalla, R., Szajna, W. and Kolek, P., 2014. Ångström (B1Σ+→ A1Π) 0–1 and 1–1 bands in isotopic CO molecules: further investigations. Journal of Physics B: Atomic, Molecular and Optical Physics, 47(4), p.045101.
+
+<a id="12">[12] Vol'Kenshtein, M.V., 1955. Structure and physical properties of molecules. Izd. Inostr. Lit., Moscow.
