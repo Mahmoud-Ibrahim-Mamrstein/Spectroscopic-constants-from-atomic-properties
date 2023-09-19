@@ -457,7 +457,7 @@ pyplot.savefig('r2_scatter_ann.svg')
 # In[ ]:
 
 
-results('r2 model',gr_expand,'Re (\AA)',re_test_preds,308,MAE,RMSE,R,r"stat_summ.csv")
+results('r2 model',gr_expand,'Re (\AA)',re_test_preds,314,MAE,RMSE,R,r"stat_summ.csv")
 gr_expand['re_test_preds']=re_test_preds
 gr_expand['re_test_std']=re_test_std
 gr_expand['re_train_preds']=re_train_preds
