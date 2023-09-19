@@ -462,7 +462,7 @@ pyplot.savefig('r1_scatter_ann.svg') # saving the annotated scatter plot
 # In[ ]:
 
 
-results('r1 model',gr_expand,'Re (\AA)',re_test_preds,308,MAE,RMSE,R,r"stat_summ.csv") # saving results and scores
+results('r1 model',gr_expand,'Re (\AA)',re_test_preds,314,MAE,RMSE,R,r"stat_summ.csv") # saving results and scores
 gr_expand['re_test_preds']=re_test_preds # saving the average testing predictions for each molecule over the MC-CV splits
 gr_expand['re_test_std']=re_test_std # saving the average testing standard deviations for each molecule over the MC-CV splits
 gr_expand['re_train_preds']=re_train_preds # saving the average training predictions for each molecule over the MC-CV splits
