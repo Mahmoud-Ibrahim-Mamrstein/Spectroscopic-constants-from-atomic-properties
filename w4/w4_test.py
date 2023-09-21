@@ -397,5 +397,5 @@ for index in r_y_test_preds:
     re_test_preds.append(((r_y_test_preds[index][0])))
     re_test_std.append(((r_test_stds[index][0])))
 testing_results = pd.DataFrame(list(zip(test_molecules, true_values,re_test_preds,re_test_std)), columns =['Molecule', 'true $\omega_e$(cm$^{-1}$)','Predicted $\omega_e$(cm$^{-1}$)','error bars']).drop_duplicates(subset='Molecule')
-testing_results.to_csv(r'w2_testing_results.csv')
+testing_results.to_csv(r'w4_testing_results.csv')
 
