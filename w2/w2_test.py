@@ -2,7 +2,8 @@
 # coding: utf-8
 
 # # Testing the w2 model
-# we test the r2 model against a number of chalenging molecules. We follow a leave one out scheme in testing. That is, all the molecules are used to train the model leaving one out one molecule for testing. This process is repeated for each molecule.
+# 
+# we test the w2 model against a number of chalenging molecules. We follow a leave one out scheme in testing. That is, all the molecules are used to train the model leaving one molecule out for testing. This process is repeated for each molecule.
 
 # # 1.Import libraries and objects
 
@@ -322,24 +323,6 @@ def ml_model(data,features,prior_features,logtarget,target,nu,normalize_y): #fun
         R.append(100*(np.sqrt(mean_squared_error(re_test_set[target],r_y_test_pred)))/((data[target]).max()-(data[target]).min())) #calculating test R of the split and appending it to the test R list 
 
         trval[str(s)]['R']=R[-1] #Test R of split s
-        
-        #if trval[str(s)]['R'] > 3.0:
-         #   continue
-            #print(re_test_set['Molecule'])
-
-        #print("Molecule",re_test_set["Molecule"],'-------')
-        #print('sigma: ',trval[str(s)]['$\sigma^2$'],"length scale: ",trval[str(s)]['length scale'],'noise level: ',trval[str(s)]['noise level'])
-        
-        #print("Split:",s)
-        print('Molecule',re_test_set['Molecule'].tolist()[-1])
-        #print('Train MAE', np.array(Train_MAE).mean(),trval[str(s)]['Train_MAE'])
-        print('Test MAE', np.array(MAE).mean(),trval[str(s)]['MAE'])
-        #print('Test R%: ',np.array(R).mean(),trval[str(s)]['R'])
-        print('Train RMSE: ',np.array(Train_RMSE).mean(),trval[str(s)]['Train_RMSE'])
-        #print('Test RMSE: ',np.array(RMSE).mean(),trval[str(s)]['RMSE'])
-      #  print('Train RMSLE: ',np.array(Train_RMSLE).mean(),trval[str(s)]['Train_RMSLE'])
-     #   print('Test RMSLE: ',np.array(RMSLE).mean(),trval[str(s)]['RMSLE'])
-              
         
     
         s=s+1 # incrementing the loo split counter
