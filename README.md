@@ -35,7 +35,7 @@ Heteronuclear molecules were gathered from multiple sources, mainly from [The Di
 Other heteronuclear molecules were gathered from various published papers. Most are experimental studies, some are review papers, and some are theoretical. Theoretical papers usually compare their results with previously published experimental results. These papers helped us to find several experimental studies regarding molecules of theoretical and experimental interest. Both experimental and theoretical studies are cited in the manuscript and the references column in [g.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g.csv) and [g-test-2.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g-test-2.csv).       
 
 ## Data cleaning
-Experimental data from cited books, papers, or online accessible databases usually does not suffer from data entry errors. However, careful reading of the text describing the raw data was required. Footnotes in the Huber and Herzberg book helped eliminate some of the molecules or initiate a search to find more recent experimental results. For instance, AgBi was eliminated from the dataset due to the footnote regarding the calculated value of $r_e$ from the rotational constants. The $r_e$ values of XeCl and HgCl are uncertain, as listed in [[1]](#1). We have found some discrepancies in the experimental values of some molecules, for instance, $\text{Hg}_2$ [[2]](#2), [[3]](#3), and other cases discussed in detail in the manuscript (e.g., AuF and ZnBr). To overcome the potential susceptibility of the data to errors stemming from variations in experimental techniques or conditions during the measurement of spectroscopic constants, we try to find various experimental studies that agree on the same value of a spectroscopic constant. If there is a discrepancy in the experimental value of some spectroscopic constants of some molecule (e.g., AuF and ZnBr) we turn to theoretical studies to gain an insight about the most probable value. To the best of our knowledge, we were careful in reviewing such cases where there are discrepancies among various reported experimental results. However, this exercise requires continuous revisions of the data and monitoring of the most recent experimental studies. The following histogram shows a comparison in the number of references per publishing date between [The Diatomic Molecular Spectroscopy Database](https://rios.mp.fhi.mpg.de/index.php) v.01 and v.02. The figure shows that in v.02 of the database, a more careful review of various published experimental and theoretical studies and gathering of up-to-date data was a significant priority for the authors.   
+Experimental data from cited books, papers, or online accessible databases usually does not suffer from data entry errors. However, careful reading of the text describing the raw data was required. Footnotes in the Huber and Herzberg book helped eliminate some of the molecules or initiate a search to find more recent experimental results. For instance, AgBi was eliminated from the dataset due to the footnote regarding the calculated value of $R_e$ from the rotational constants. The $R_e$ values of XeCl and HgCl are uncertain, as listed in [[1]](#1). We have found some discrepancies in the experimental values of some molecules, for instance, $\text{Hg}_2$ [[2]](#2), [[3]](#3), and other cases discussed in detail in the manuscript (e.g., AuF and ZnBr). To overcome the potential susceptibility of the data to errors stemming from variations in experimental techniques or conditions during the measurement of spectroscopic constants, we try to find various experimental studies that agree on the same value of a spectroscopic constant. If there is a discrepancy in the experimental value of some spectroscopic constants of some molecule (e.g., AuF and ZnBr) we turn to theoretical studies to gain an insight about the most probable value. To the best of our knowledge, we were careful in reviewing such cases where there are discrepancies among various reported experimental results. However, this exercise requires continuous revisions of the data and monitoring of the most recent experimental studies. The following histogram shows a comparison in the number of references per publishing date between [The Diatomic Molecular Spectroscopy Database](https://rios.mp.fhi.mpg.de/index.php) v.01 and v.02. The figure shows that in v.02 of the database, a more careful review of various published experimental and theoretical studies and gathering of up-to-date data was a significant priority for the authors.   
 ![Alt text](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/71bebc2184c9a4746bf4c106f14a8287386f23cf/refrences%20_compare.svg)
 
 During the development of this work, we have realized that, historically, uncertainties about the dissociation energy experimental values had restrained the development of empirical relations connecting them to other atomic and molecular properties and have led several authors to focus their efforts on the $\omega_e$ - $R_e$ relation [[8]](#8), [[9]](#9), [[10]](#10). The data used to train model d1 is primarily collected from Huber and Herzberg's constants of diatomic molecules, first published in 1979 [[1]](#1). More recently, Fu et al. used an ML model to predict dissociation energies for diatomic molecules, exploiting microscopic and macroscopic properties[[6]](#6). They tested their model against CO and highlighted that the reported experimental dissociation energy in the literature had increased by 100 kcal/mol over the course of 78 years from 1936 to 2014 [[4]](#4), [[9]](#9), [[10]](#10) (in Table 1 of Ref.[[4]](#4). Unlike experimental values of $R_e$ and $\omega_e$, since 1980, a significant number of $D_0^0$ values have been updated [[5]](#5). To name a few, MgD, MgBr, MgO, CaCl. CaO, SrI, SrO, TiS, NbO, AgF, AgBr, and BrF all have their experimental values updated with at least  $\pm 2.3 \ \text{kcal/mol}$ difference from their values in Huber and Herzberg [[1]](#1), [[5]](#5). Moreover, the uncertainties in $D_0^0$ experimental values are not within chemical accuracy for some molecules. For instance, MgH, CaCl, CaO, CaS, SrH, BaO, BaS, ScF, Tif, NbO, and BrF have uncertainties ranging from $\pm 1 \ \text{kcal/mol} \ \text{up to} \pm 8 \  \text{kcal/mol}$ [[5]](#5). Unlike $R_e$ and $\omega_e$, it is most likely that uncertainties around $D_0^0$ experimental values drive from various systematic effects.
@@ -56,27 +56,27 @@ To avoid data entry errors, the authors reviewed the data set several times duri
 [all_new_data.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/8fb6627a3cf221a32150bc9b43dcf659b3174bb7/data/all_new_data.csv): Conssists of all the newly gatherd data with refrences and authors' notes
 Electronic state: electronic state and/or symmetry symbol
 
-$T_e$  (cm $^{-1}$):  minimum electronic energy 
+$T_e$  (cm $^{-1}$):  Minimum electronic energy 
 
-$\omega_e$ (cm $^{-1}$): vibrational constant – first term
+$\omega_e$ (cm $^{-1}$): Vibrational constant – first term
 
-$\omega_ex_e$ (cm $^{-1}$): vibrational constant – second term 
+$\omega_ex_e$ (cm $^{-1}$): Vibrational constant – second term 
 
-$B_e$ (cm $^{-1}$): rotational constant in equilibrium position
+$B_e$ (cm $^{-1}$): Rotational constant in equilibrium position
 
-$\alpha_e$ (cm $^{-1}$): rotational constant – first term
+$\alpha_e$ (cm $^{-1}$): Rotational constant – first term
 
-$D_e$ ($10^{-7}$ cm $^{-1}$): 	centrifugal distortion constant
+$D_e$ ($10^{-7}$ cm $^{-1}$): 	Centrifugal distortion constant
 
-$R_e$ (\AA): internuclear distance
+$R_e$ (\AA): Internuclear distance
 
 $D_O^O$ (eV): Dissociation energy
 
-$IP$ (eV): Ionozation potential
+$IP$ (eV): Ionization potential
 
 lan_act: Indicates the use of group 3 as the group for both lanthanides and actinides
 
-iso: indicates of the use of 0 as the group number of Deuterium and -1 as the group number of Tritium.
+iso: Indicates of the use of 0 as the group number of deuterium and -1 as the group number of tritium.
  
 ## Gaussian process regression
 We define our data set $D=\{(\textbf{x}_i,y_i)|i=1,\cdot\cdot\cdot,n\}$, where $\textbf{x}_i$ is a feature vector of some dimension $D$ associated with the $i$-th element of the dataset, $y_i$ is a scalar target label, and $n$ is the number of observations, i.e., the number of elements in the dataset. The set of all feature vectors and corresponding labels can be grouped in the random variables $X$ and $\textbf{y}$, respectively, where $X=(\textbf{x}_1,\cdot\cdot\cdot,\textbf{x}_n)$ and $\textbf{y}=(y_1,\cdot\cdot\cdot,y_n)$. Here, $\textbf{y}$ consists of values of molecular properties to be learned. $y_i$ is $R_e$, $\omega_e$, or $D_0^0$ of the $i$-th molecule, whereas $\textbf{x}_i$ is a vector containing atomic or molecular properties of the same molecule.
