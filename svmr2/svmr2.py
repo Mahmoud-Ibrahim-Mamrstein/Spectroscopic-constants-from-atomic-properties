@@ -26,6 +26,7 @@ from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.model_selection import StratifiedKFold, LeaveOneOut
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.gaussian_process.kernels import ConstantKernel, Product, Matern, WhiteKernel, RBF, DotProduct, ExpSineSquared
+import skopt
 
 
 # # 2. Functions
@@ -46,8 +47,6 @@ def load(handel,old_handel):
         ind1=dfe.loc[dfe['Molecule'].str.contains(r'^'+char+r'\D')].index.values
         ind2=dfe.loc[dfe['Molecule'].str.contains(char+r'$')].index.values
         ind3=dfe.loc[dfe['Molecule'].str.contains(r'^'+char+r'2')].index.values
-        #print(char)
-        #print(df1[df1.Symbol==char].Period.values)
         dfe.loc[ind1,'e1']=df1[df1.Symbol==char].NumberofElectrons.values[0]
         dfe.loc[ind2,'e2']=df1[df1.Symbol==char].NumberofElectrons.values[0]
         dfe.loc[ind3,'e1']=df1[df1.Symbol==char].NumberofElectrons.values[0]
@@ -171,7 +170,7 @@ def load(handel,old_handel):
 # In[ ]:
 
 
-def ml_model(data,strata,test_size,features,logtarget,target,n_splits=1000):
+def ml_model(data,strata,test_size,constant_value,length_scale,C,epsilon,nu,features,logtarget,target,n_splits=1000):
     r_y_train_preds={}
     r_y_test_preds={}
     trval={} #intiate a dictionary to store optmized kernels and scores
@@ -194,21 +193,18 @@ def ml_model(data,strata,test_size,features,logtarget,target,n_splits=1000):
         re_train_set1['ind']=train_index
         re_test_set1 = data.iloc[test_index]
         re_test_set1['ind']=test_index
-        print('size of training set before removing mirror molecules',len(re_train_set1))
         
         re_train_set=re_train_set1[~re_train_set1['Molecule'].isin(re_test_set1['Molecule'].tolist())]
         re_test_set=pd.concat([re_test_set1,re_train_set1[re_train_set1['Molecule'].isin(re_test_set1['Molecule'].tolist())]])
         
         for i in re_train_set['Molecule'].isin([re_test_set['Molecule']]):
             if i ==True:
-                print(i)
-        print('size of training set after removing mirror molecules',len(re_train_set))
+                print('One molecule is in the training set and testing set at the same time')
         train.append(re_train_set['Molecule'])
         if (re_test_set['Molecule'].tolist()) in test:
             break
 
         test.append(re_test_set['Molecule'].tolist())
-        
 
 
         trval[str(s)]={}
@@ -216,12 +212,11 @@ def ml_model(data,strata,test_size,features,logtarget,target,n_splits=1000):
         trval[str(s)]['length scale']=1
         trval[str(s)]['noise level']=1
         signal_variance=(re_train_set[logtarget].var()) #Intiate constant cooefcient of the Matern kernel function
-        length_scale=(re_train_set[features].std()).mean() #Intiate length scale of the Matern kernel function
-      
-        kernel = kernel=ConstantKernel(constant_value=1000.0)*Matern(length_scale=22.565612997920752, nu=3/2)+WhiteKernel(noise_level=re_train_set[target].std()/np.sqrt(2),noise_level_bounds=(10**-15,1))
         
-        reg = make_pipeline(StandardScaler(), SVR(kernel=kernel,C=5.804826176741464, epsilon=0.001)).fit(re_train_set[features], re_train_set[logtarget])
-              
+        kernel = kernel=ConstantKernel(constant_value=constant_value)*Matern(length_scale=length_scale, nu=nu)+WhiteKernel(noise_level=10**-15,noise_level_bounds=(10**-15,1))
+        
+        reg = make_pipeline(SVR(kernel=kernel,C=C, epsilon=epsilon)).fit(re_train_set[features], re_train_set[logtarget])
+        
         r_y_train_pred_log=reg.predict(re_train_set[features])
         
         r_y_test_pred_log=reg.predict(re_test_set[features])
@@ -273,8 +268,7 @@ def ml_model(data,strata,test_size,features,logtarget,target,n_splits=1000):
         R.append(100*(np.sqrt(mean_squared_error(re_test_set[target],r_y_test_pred)))/((data[target]).max()-(data[target]).min()))
 
         trval[str(s)]['R']=R[-1]
-        
-
+    
         s=s+1
         
 
@@ -296,7 +290,7 @@ def ml_model(data,strata,test_size,features,logtarget,target,n_splits=1000):
     return trval,train,test,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_y_test_preds
 
 
-# ## 2.3 Ploting and results report Function
+# ## 2.3 Functions for plotting and reporting results
 
 # In[ ]:
 
@@ -353,15 +347,16 @@ def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,han
 g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"svmr2_gr_expand_pred.csv",old_handel=r"list of molecules used in Xiangue and Jesus paper.csv")
 
 
+# 
 # ### 3.1.1 Stratify
 
 # In[ ]:
 
 
-gw_expand=gw_expand[~gw_expand['Molecule'].isin(['XeCl','AgBi','Hg2','HgCl'])] #Remmove molecules with uncertain data
+gw_expand=gr_expand[~gr_expand['Molecule'].isin(['XeCl','AgBi','Hg2','HgCl'])] #Remmove molecules with uncertain data
 gw_expand['rcat']=gw_expand['Re (\AA)'] # gr_expand['rcat'] is used to define strata for the process of stratified sampling
 gw_expand_unique=np.unique(gw_expand['rcat'])
-ind=[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,303] # indicies used to defined strata for the stratified random sampling 
+ind=[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,309] # indicies used to defined strata for the stratified random sampling 
 for i in range(len(ind)-1):
     gw_expand['rcat'].where((gw_expand['rcat']>gw_expand_unique[ind[i+1]])|(gw_expand['rcat']<=gw_expand_unique[ind[i]]),gw_expand_unique[ind[i]],inplace=True) # stratification according to the levels of the target variables
 
@@ -375,68 +370,61 @@ gw_expand['ln(mu^(1/2))']=np.log(np.sqrt(gw_expand['Reduced mass']))
 gw_expand['ln(w)']=np.log(gw_expand['omega_e (cm^{-1})'])
 
 
-# ### 3.1.2 Bayesian search of hyperparameters
-
 # In[ ]:
 
 
 kernel=ConstantKernel(constant_value=1)*Matern(length_scale=1, nu=3/2)+WhiteKernel(noise_level=10**-15,noise_level_bounds=(10**-15,1))
-SVR(kernel=kernel).get_params().keys()
 
 
-# #### (Hyper-)parameters of the model estimator dict_keys(['C', 'cache_size', 'coef0', 'degree', 'epsilon', 'gamma', 'kernel__k1', 'kernel__k2', 'kernel__k1__k1', 'kernel__k1__k2', 'kernel__k1__k1__constant_value', 'kernel__k1__k1__constant_value_bounds', 'kernel__k1__k2__length_scale', 'kernel__k1__k2__length_scale_bounds', 'kernel__k1__k2__nu', 'kernel__k2__noise_level', 'kernel__k2__noise_level_bounds', 'kernel', 'max_iter', 'shrinking', 'tol', 'verbose'])
+# #### (hyper-)parameters of the model estimator ['C', 'cache_size', 'coef0', 'degree', 'epsilon', 'gamma', 'kernel__k1', 'kernel__k2', 'kernel__k1__k1', 'kernel__k1__k2', 'kernel__k1__k1__constant_value', 'kernel__k1__k1__constant_value_bounds', 'kernel__k1__k2__length_scale', 'kernel__k1__k2__length_scale_bounds', 'kernel__k1__k2__nu', 'kernel__k2__noise_level', 'kernel__k2__noise_level_bounds', 'kernel', 'max_iter', 'shrinking', 'tol', 'verbose']
 
 # In[ ]:
 
 
-# automatic svm hyperparameter tuning using skopt for
+# automatic svm hyperparameter tuning using skopt
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import RepeatedKFold
 from skopt import BayesSearchCV
-# load dataset
-# split into input and output elements
 # define search space
 params = dict()
-params['C'] = (1e-6, 100.0, 'log-uniform')
-params['kernel__k1__k2__length_scale'] = (1e-6, 1000.0, 'log-uniform')
-params['kernel__k1__k1__constant_value'] = (1e-6, 1000.0, 'log-uniform')
+params['C'] = (1.0, 100.0, 'log-uniform')
+params['kernel__k1__k2__length_scale'] = (0.1, 100.0, 'log-uniform')
+params['kernel__k1__k1__constant_value'] = (0.1, 10000.0, 'log-uniform')
 params['epsilon'] = (0.0001,0.001,0.01,0.1)
 # define evaluation
 cv = StratifiedShuffleSplit(n_splits=1000, test_size=31,random_state=42).split(gw_expand,gw_expand['rcat'])
 # define the search
-search = BayesSearchCV(estimator=SVR(kernel=kernel), search_spaces=params, n_jobs=-1, cv=cv,return_train_score=True)
 # perform the search
-search.fit(gw_expand[['p1','p2','g1_lan_act','g2_lan_act','ln(mu^(1/2))','ln(w)']], gw_expand['Re (\AA)'])
+search = BayesSearchCV(estimator=SVR(kernel=kernel), search_spaces=params, n_jobs=-1, cv=cv,return_train_score=True)
+search.fit(gw_expand[['p1','p2','g1_lan_act','g2_lan_act']], gw_expand['Re (\AA)'])
 # report the best result
 print(search.best_score_)
 print(search.best_params_)
 
 
-# #### Results returned from the last cell
-# #### The best score is 0.9957083915073753
-# #### The best parameters are [('C', 5.804826176741464), ('epsilon', 0.01), ('kernel__k1__k1__constant_value', 1000.0), ('kernel__k1__k2__length_scale', 22.565612997920752)]
-
 # In[ ]:
 
 
-trval,train,test,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_y_test_preds=ml_model(data=gw_expand,strata=gw_expand['wcat'],test_size=31,features=['p1','p2','g1_lan_act','g2_lan_act','ln(mu^(1/2))','ln(w)'],target='Re (\AA)',logtarget='Re (\AA)',n_splits=1000)
+best_params_=([('C', 100), ('epsilon', 0.0001), ('kernel__k1__k1__constant_value', 244.6895930898557), ('kernel__k1__k2__length_scale', 58.553152039401134)]) # the best parameters rturned from the Bayes search cv,these results may be used to replicate the results in the manuscript
+trval,train,test,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_y_test_preds=ml_model(data=gw_expand,strata=gw_expand['rcat'],test_size=31,C=best_params_[0][1],epsilon=best_params_[1][1],constant_value=best_params_[2][1],length_scale=best_params_[3][1],nu=3/2,features=['p1','p2','g1_lan_act','g2_lan_act','mu^(1/2)'],target='Re (\AA)',logtarget='Re (\AA)',n_splits=1000)
 
 
 # In[ ]:
 
 
 re_train_preds,re_test_preds,out,fig,ax=plot_results(gw_expand,'True $R_e(\AA)$','Predicted $R_e(\AA)$','Re (\AA)',r_y_train_preds,r_y_test_preds);
-pyplot.savefig('svmr2.svg')
+pyplot.savefig('svmr1+.svg')
 for i in range(len(re_test_preds)):
     if abs(gw_expand['Re (\AA)'].tolist()[i]-re_test_preds[i])<0.1:
         continue
     ax.annotate(gw_expand['Molecule'].tolist()[i], (gw_expand['Re (\AA)'].tolist()[i], re_test_preds[i]))
-pyplot.savefig('svmr2_annot.svg')
+pyplot.savefig('svmr1+_annot.svg')
 
 
 # In[ ]:
 
 
-results('svmr2 model',gr_expand,'Re (\AA)',re_test_preds,308,MAE,RMSE,R,r"stat_summ.csv")
+results('svmr2 model',gr_expand,'Re (\AA)',re_test_preds,314,MAE,RMSE,R,r"stat_summ.csv")
 gr_expand['re_test_preds']=re_test_preds
 gr_expand['re_train_preds']=re_train_preds
 gr_expand.to_csv('svmr2_gr_expand_pred.csv')
