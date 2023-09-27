@@ -21,7 +21,7 @@ matplotlib-inline|         0.1.2|              pyhd3eb1b0_2|                    
 matplotlib-venn|           0.11.9|                   pypi_0|                pypi|
 scipy|                     1.7.3|            py39h0a974cb_0|                    |
 seaborn|                   0.11.2|             pyhd3eb1b0_0|                    |
-
+scikit-optimize|          0.9.0|
 ## Data gathering
 
 In this project spectroscopic constants of diatomic molecules have been gathered from various published books, papers, and online accessible databases (e.g., [The Diatomic Molecular Spectroscopy Database](https://rios.mp.fhi.mpg.de/index.php) and [NIST Chemistry WebBook](https://webbook.nist.gov/chemistry/))
