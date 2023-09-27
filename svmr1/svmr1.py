@@ -212,11 +212,10 @@ def ml_model(data,strata,test_size,constant_value,length_scale,C,epsilon,nu,feat
         trval[str(s)]['length scale']=1
         trval[str(s)]['noise level']=1
         signal_variance=(re_train_set[logtarget].var()) #Intiate constant cooefcient of the Matern kernel function
-        length_scale=(re_train_set[features].std()).mean() #Intiate length scale of the Matern kernel function
-      
-        kernel = kernel=ConstantKernel(constant_value=constant_value)*Matern(length_scale=length_scale, nu=nu)+WhiteKernel(noise_level=re_train_set[target].std()/np.sqrt(2),noise_level_bounds=(10**-15,1))
         
-        reg = make_pipeline(StandardScaler(), SVR(kernel=kernel,C=C, epsilon=epsilon)).fit(re_train_set[features], re_train_set[logtarget])
+        kernel = kernel=ConstantKernel(constant_value=constant_value)*Matern(length_scale=length_scale, nu=nu)+WhiteKernel(noise_level=10**-15,noise_level_bounds=(10**-15,1))
+        
+        reg = make_pipeline(SVR(kernel=kernel,C=C, epsilon=epsilon)).fit(re_train_set[features], re_train_set[logtarget])
         
         r_y_train_pred_log=reg.predict(re_train_set[features])
         
@@ -270,7 +269,6 @@ def ml_model(data,strata,test_size,constant_value,length_scale,C,epsilon,nu,feat
 
         trval[str(s)]['R']=R[-1]
         
-        print(trval[str(s)]['MAE'])
     
         s=s+1
         
@@ -391,9 +389,9 @@ from sklearn.model_selection import RepeatedKFold
 from skopt import BayesSearchCV
 # define search space
 params = dict()
-params['C'] = (1, 100.0, 'log-uniform')
-params['kernel__k1__k2__length_scale'] = (1, 100.0, 'log-uniform')
-params['kernel__k1__k1__constant_value'] = (1, 10000.0, 'log-uniform')
+params['C'] = (1.0, 100.0, 'log-uniform')
+params['kernel__k1__k2__length_scale'] = (0.1, 100.0, 'log-uniform')
+params['kernel__k1__k1__constant_value'] = (0.1, 10000.0, 'log-uniform')
 params['epsilon'] = (0.0001,0.001,0.01,0.1)
 # define evaluation
 cv = StratifiedShuffleSplit(n_splits=1000, test_size=31,random_state=42).split(gw_expand,gw_expand['rcat'])
@@ -404,36 +402,36 @@ search.fit(gw_expand[['p1','p2','g1_lan_act','g2_lan_act']], gw_expand['Re (\AA)
 # report the best result
 print(search.best_score_)
 print(search.best_params_)
+#### best score returned from the CV Bayes search was 0.9897409746307094
+#### Best parameters returned from the CV Bayes search were [('C', 100), ('epsilon', 0.0001), ('kernel__k1__k1__constant_value', 10000), ('kernel__k1__k2__length_scale', 33)])
 
-
-# #### best score returned from the previous cell is 0.9897409746307094
-# #### Best parameters returned from the previous cell are [('C', 100), ('epsilon', 0.0001), ('kernel__k1__k1__constant_value', 10000), ('kernel__k1__k2__length_scale', 33)])
 
 # In[ ]:
 
 
-trval,train,test,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_y_test_preds=ml_model(data=gw_expand,strata=gw_expand['rcat'],test_size=31,constant_value=10000,length_scale=33,C=100,epsilon=0.0001,nu=3/2,features=['p1','p2','g1_lan_act','g2_lan_act'],target='Re (\AA)',logtarget='Re (\AA)',n_splits=1000)
+best_params_=([('C', 100), ('epsilon', 0.001), ('kernel__k1__k1__constant_value', 1000.0), ('kernel__k1__k2__length_scale', 24.06295579569555)]) # the best parameters rturned from the Bayes search cv,these results may be used to replicate the results in the manuscript
+trval,train,test,Train_MAE,Train_RMSE,Train_R,Train_RMSLE,MAE,RMSE,R,RMSLE,r_y_train_preds,r_y_test_preds=ml_model(data=gw_expand,strata=gw_expand['rcat'],test_size=31,C=best_params_[0][1],epsilon=best_params_[1][1],constant_value=best_params_[2][1],length_scale=best_params_[3][1],nu=3/2,features=['p1','p2','g1_lan_act','g2_lan_act'],target='Re (\AA)',logtarget='Re (\AA)',n_splits=1000)
 
 
 # In[ ]:
 
 
 re_train_preds,re_test_preds,out,fig,ax=plot_results(gw_expand,'True $R_e(\AA)$','Predicted $R_e(\AA)$','Re (\AA)',r_y_train_preds,r_y_test_preds);
-pyplot.savefig('svmr1_.svg')
+pyplot.savefig('svmr2.svg')
 for i in range(len(re_test_preds)):
     if abs(gw_expand['Re (\AA)'].tolist()[i]-re_test_preds[i])<0.1:
         continue
     ax.annotate(gw_expand['Molecule'].tolist()[i], (gw_expand['Re (\AA)'].tolist()[i], re_test_preds[i]))
-pyplot.savefig('svmr1_annot.svg')
+pyplot.savefig('svmr2_annot.svg')
 
 
 # In[ ]:
 
 
-results('svmr1 model',gr_expand,'Re (\AA)',re_test_preds,314,MAE,RMSE,R,r"stat_summ.csv")
+results('svmr2 model',gr_expand,'Re (\AA)',re_test_preds,314,MAE,RMSE,R,r"stat_summ.csv")
 gr_expand['re_test_preds']=re_test_preds
 gr_expand['re_train_preds']=re_train_preds
-gr_expand.to_csv('svmr1_gr_expand_pred.csv')
+gr_expand.to_csv('svmr2_gr_expand_pred.csv')
 split_stat = pd.DataFrame(list(zip(Train_MAE,Train_RMSE,MAE,RMSE)),columns =['Train_MAE','Train_RMSE','MAE','RMSE'])
-split_stat.to_csv('svmr1_split_stat.csv')
+split_stat.to_csv('svmr2_split_stat.csv')
 
