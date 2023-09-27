@@ -1,0 +1,11 @@
+networkx==2.7.1
+plotly==5.13.1
+graphviz==0.20.1
+TracGraphviz==1.4.0.3
+dawgie-pydot3==1.0.11
+nxpydot==0.1
+pydot==1.4.2
+pydot2==1.0.33
+pydot3==1.0.9
+pydot3k==1.0.17
+pydotz==1.5.1
