@@ -10,7 +10,7 @@ Model w1 is the best-performing model of Liu et al.[[1]](#1). It is characterize
 [periodic.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/cb121f56b411820aee8c37a67363ad192c939044/w1/peridic.csv): A csv file of the periodic table of elements\
 [w1_gr_expand_test.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/03fb8e821479dfc6c13eb2018370bd2f914d6de6/w1/w1_gr_expand_test.csv): A csv files consisting of data of molecules used for testing in addition to molecules used for training and validation.\
 [w1_testing_results.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/1eb8c5f0ff5f28c88635ce23f0bec026340aadbe/w1/w1_testing_results.csv): A csv of the models predictions on the testing set\
-[list molecules used in Xiangue and Jesus paper.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/9041f8a5e3190998c0a8db29c5ffac11ad53a9fa/w1/list%20of%20molecules%20used%20in%20Xiangue%20and%20Jesus%20paper.csv): A list of molecules used to train the models in Liu et al.[[1]](#1).
+[list molecules used in Xiangue and Jesus paper.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/9041f8a5e3190998c0a8db29c5ffac11ad53a9fa/w1/list%20of%20molecules%20used%20in%20Xiangue%20and%20Jesus%20paper.csv): A list of molecules used to train the models in [[1]](#1).
 
 ## References
 <a id="1">[1]</a> 
