@@ -1,0 +1,5 @@
+,"$R_e$ LR results with features p1, p2, g1, g2, ln(e1*e2)"
+$r%$,14.587043304546981
+MAE,0.3339939637394623
+Number of molecules in the whole data set,314
+RMSE,0.5438924966533387
