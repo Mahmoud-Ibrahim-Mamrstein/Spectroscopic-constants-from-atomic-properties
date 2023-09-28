@@ -1,3 +1,10 @@
+# Model d1
+Model d1 predict the dissociation energy, $D_0^0$, via $\ln(D_0^0)$ using  ($p_1$,$g_1$,$p_2$,$g_2$,$\mu^{1/2}$) as features in a Mat\'ern 3/2 kernel, and a prior mean function that employs both $\omega_e$ and $R_e$
+\begin{eqnarray}
+    m_{d1} = \beta_0^{d1}+\beta_1^{d1}(p_1+p_2) + \beta_2^{d1}(g_1+g_2) + \beta_3^{d1} R_e \nonumber \\
+    + \beta_4^{d1} \ln{(\mu^{1/2})}+ \beta_5^{d1} \ln{(\omega_e)},
+\end{eqnarray}
+where $\beta_k^{d1}$, $k \in \{0,1,2,3,4,5\}$ are the linear coefficients of $m_{d1}$.
 ## Files description 
 [d1.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/d1/d1.ipynb) : A Jupiter notebook of the model\
 [d1.py](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/d1/d1.py) : A python file of the model\
