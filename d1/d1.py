@@ -12,22 +12,16 @@ import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 import numpy as np
 import sklearn as sk
-from matplotlib.backends.backend_pdf import PdfPages
-import re
-import seaborn as sns
 from matplotlib import pyplot
-get_ipython().run_line_magic('matplotlib', 'inline')
 import time
 import math
 from math import sqrt
 import scipy
-from sklearn.svm import SVR
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import StratifiedShuffleSplit
-from sklearn.model_selection import StratifiedKFold, LeaveOneOut
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import ConstantKernel, Matern, WhiteKernel
 from sklearn.metrics import mean_squared_error, mean_absolute_error
-from sklearn.gaussian_process.kernels import ConstantKernel, Product, Matern, WhiteKernel, RBF, DotProduct, ExpSineSquared
 
 
 # # 2. Inheritance
