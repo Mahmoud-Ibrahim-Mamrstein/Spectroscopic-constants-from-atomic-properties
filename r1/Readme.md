@@ -11,7 +11,10 @@ where  $\beta_k^{r1-r2}$, $k \in \{0,1,2\}$ are the linear coefficients of  $m_{
 [r1_learninig_curves.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/19d4c9834a2bb9521bcfde277eb46e59ded7ae3a/r1/r1_learning_curves.csv): A csv file containing a statistical summary of each step used for producing the learning curves. To get these results the ml_model function in [r1.ipynb](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/675a7ef80706594b614d08ff2983706efb1f9aab/r1/r1.ipynb) was run several times with different testing set sizes, each was run for 500 MC-CV splits. Column 'portion_of_data_set' indicates the portion used for training the model. \
 [r1_split_stat.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/9ba61b3b2dad50f9deddf955f9303b0adc310fae/r1/r1_split_stat.csv): A csv file containing a statistical summary of each MC-CV step.\
 [stat_summ](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b4a0b821ac4d3341ebb8f74178527c816e036641/r1/stat_summ.csv): statistical summary of the model.
-[periodic](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/cb121f56b411820aee8c37a67363ad192c939044/r1/peridic.csv): a csv file of the periodic table of elements
+[periodic.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/cb121f56b411820aee8c37a67363ad192c939044/r1/peridic.csv): a csv file of the periodic table of elements
+
+[r1_testing_results.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/1eb8c5f0ff5f28c88635ce23f0bec026340aadbe/r1/r1_testing_results.csv): A csv of the models predictions on the testing set
+
 ## References
 <a id="1">[1]</a> 
 X. Liu, S. Truppe, G. Meijer and J. Pérez-Ríos, Journal of
