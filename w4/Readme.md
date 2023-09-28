@@ -1,5 +1,5 @@
 # Model w4
- Model w3 uses the periods and the groups of the constiuent atoms and the reduced mass of the molecule along with $R_e$ as features in a Matern 3/2 kernels. $R_e$ is included as a feature in the prior mean function as well.
+ Model w4 uses the periods and the groups of the constituent atoms and the reduced mass of the molecule along with $R_e$ as features in a Matern 3/2 kernels. $R_e$ is included as a feature in the prior mean function as well.
 $$m_{w3-w4} = \beta_0^{w3-w4}+\beta_1^{w3-w4}(p_1+p_2) + \beta_2^{w3-w4}(g_1+g_2) + \beta_3^{w3-w4} R_e +\beta_4^{w3-w4} \ln{(\mu^{1/2})}$$
 where $\beta_k^{w4}$, $k \in \{0,1,2,3,4\}$ are the linear coefficients
 
