@@ -1,5 +1,5 @@
 ,"$\omega_e (cm^{-1})$ LR results with features $p_1+p_2$, $g_1+g_2$, $ln(Z_1 	imes Z_2)$"
-$r%$,7.706283952350035
-MAE,238.18747238459449
-Number of molecules in the whole data set,310
-RMSE,337.8213714360823
+$r%$,7.220424141461239
+MAE,218.7289404500803
+Number of molecules in the whole data set,308
+RMSE,316.5226717443747
