@@ -52,7 +52,6 @@ class MyGPR(GaussianProcessRegressor):
     def _constrained_optimization(self, obj_func, initial_theta, bounds):
         if self.optimizer == "fmin_l_bfgs_b":
             opt_res = scipy.optimize.minimize(obj_func, initial_theta, method="L-BFGS-B", jac=True, bounds=bounds,tol=self._gtol, options={'maxiter':self._max_iter, 'disp':True})
-            #_check_optimize_result("lbfgs", opt_res)
             theta_opt, func_min = opt_res.x, opt_res.fun
         elif callable(self.optimizer):
             theta_opt, func_min = self.optimizer(obj_func, initial_theta, bounds=bounds)
@@ -243,10 +242,7 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
         
         for i in re_train_set['Molecule'].isin([re_test_set['Molecule']]):
             if i ==True:
-                print(i)
                 print('warning: A molecule in the test (validation) set is aslo in the training set')
-        #print('size of training set after removing mirror molecules',len(re_train_set))
-        #print('size of test set after adding mirror molecules',len(re_test_set))
         train.append(re_train_set['Molecule'])
         if (re_test_set['Molecule'].tolist()) in test:
             break
@@ -335,8 +331,6 @@ def ml_model(data,strata,test_size,features,prior_features,logtarget,target,nu,n
                 r_y_train_preds[re_train_set.ind.tolist()[i]]=[r_y_train_pred[i]] #adding MC-CV train prediction list of a molecule of index 'i' which is not yet in re_train_set dictionary
                 r_train_stds[re_train_set.ind.tolist()[i]]=[r_std_train[i]] #adding MC-CV train GPR standard deviation list of a molecule of index 'i' not yet in r_train_stds dictionary
 
-                #print("Molecule: ",re_train_set.loc[train_index[i],'Molecule'],"true: ",gr.loc[train_index[i],'Re (\AA)'],"pred: ",r_y_train_pred[i],"standard deviation: ",r_std_train[i])
-
             else:
                 r_y_train_preds[re_train_set.ind.tolist()[i]].append(r_y_train_pred[i])  #apeending new MC-CV train prediction to an existing list of predictions of a molecule indexed i in the r_y_train_preds dictionary
                 r_train_stds[re_train_set.ind.tolist()[i]].append(r_std_train[i]) #apeending new MC-CV train standard deviation to an existing list of predictions of a molecule indexed i in the r_train_stds dictionary
@@ -412,7 +406,7 @@ def results(data_describtion,df,target,re_test_preds,no_molecules,MAE,RMSE,R,han
 # In[ ]:
 
 
-g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"r3_gr_expand_pred.csv",old_handel=r"list of molecules used in Xiangue and Jesus paper.csv")
+g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_expand, g_old_expand, g_new_expand, gr_old_expand, gw_old_expand, gr_new_expand, gw_new_expand=load(handel=r"r3_gw_expand_pred.csv",old_handel=r"list of molecules used in Xiangue and Jesus paper.csv")
 
 
 # ## 4.2 Stratify data according to the levels of the target values
@@ -421,11 +415,11 @@ g,gr,gw, g_old, g_new, gr_old, gw_old, gr_new, gw_new, g_expand, gr_expand, gw_e
 
 
 gw_expand=gw_expand[~gw_expand['Molecule'].isin(['XeCl','AgBi','Hg2','HgCl'])] #Remmove molecules with uncertain data
-gw_expand['rcat']=gw_expand['Re (\AA)']
+gw_expand['rcat']=gw_expand['Re (\AA)'] # gr_expand['rcat'] is used to define strata for the process of stratified sampling
 gw_expand_unique=np.unique(gw_expand['rcat'])
-ind=[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,302]
+ind=[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,303] # indicies used to defined strata for the stratified random sampling 
 for i in range(len(ind)-1):
-    gw_expand['rcat'].where((gw_expand['rcat']>gw_expand_unique[ind[i+1]])|(gw_expand['rcat']<=gw_expand_unique[ind[i]]),gw_expand_unique[ind[i]],inplace=True)
+    gw_expand['rcat'].where((gw_expand['rcat']>gw_expand_unique[ind[i+1]])|(gw_expand['rcat']<=gw_expand_unique[ind[i]]),gw_expand_unique[ind[i]],inplace=True) # stratification according to the levels of the target variables
 
 
 # In[ ]:
@@ -466,7 +460,7 @@ gw_expand['re_test_preds']=re_test_preds
 gw_expand['re_test_std']=re_test_std
 gw_expand['re_train_preds']=re_train_preds
 gw_expand['re_train_std']=re_train_std
-gw_expand.to_csv('r3_gr_expand_pred.csv')
+gw_expand.to_csv('r3_gw_expand_pred.csv')
 split_stat = pd.DataFrame(list(zip(Train_MAE,Train_RMSE,MAE,RMSE)),columns =['Train_MAE','Train_RMSE','MAE','RMSE'])
 split_stat.to_csv('r3_split_stat.csv')
 
