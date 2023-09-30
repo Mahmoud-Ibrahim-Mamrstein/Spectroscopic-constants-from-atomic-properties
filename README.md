@@ -68,7 +68,7 @@ $\alpha_e$ (cm $^{-1}$): Rotational constant – first term
 
 $D_e$ ($10^{-7}$ cm $^{-1}$): 	Centrifugal distortion constant
 
-$R_e$ (\AA): Internuclear distance
+$R_e$ (Å): Internuclear distance
 
 $D_O^O$ (eV): Dissociation energy
 
