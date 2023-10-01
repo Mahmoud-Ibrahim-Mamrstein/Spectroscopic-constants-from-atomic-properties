@@ -8,26 +8,27 @@
 [g.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g.csv) and [g-test-2.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g-test-2.csv): A1 and A2 columns contain the mass number of the two atoms making up a molecule. 
 
 
-[all_new_data.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/8fb6627a3cf221a32150bc9b43dcf659b3174bb7/data/all_new_data.csv): Conssists of all the newly gatherd data with refrences and authors' notes
-Electronic state: electronic state and/or symmetry symbol
+[all_new_data.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/8fb6627a3cf221a32150bc9b43dcf659b3174bb7/data/all_new_data.csv): Conssists of all the newly gatherd data with refrences and authors' notes.\
 
-$T_e$  (cm $^{-1}$):  minimum electronic energy 
+Electronic state: electronic state and/or symmetry symbol\
 
-$\omega_e$ (cm $^{-1}$): vibrational constant – first term
+$T_e$  (cm $^{-1}$):  minimum electronic energy\
 
-$\omega_ex_e$ (cm $^{-1}$): vibrational constant – second term 
+$\omega_e$ (cm $^{-1}$): vibrational constant – first term\
 
-$B_e$ (cm $^{-1}$): rotational constant in equilibrium position
+$\omega_ex_e$ (cm $^{-1}$): vibrational constant – second term\
 
-$\alpha_e$ (cm $^{-1}$): rotational constant – first term
+$B_e$ (cm $^{-1}$): rotational constant in equilibrium position\
 
-$D_e$ ($10^{-7}$ cm $^{-1}$): 	centrifugal distortion constant
+$\alpha_e$ (cm $^{-1}$): rotational constant – first term\
 
-$R_e$ (\AA): internuclear distance
+$D_e$ ($10^{-7}$ cm $^{-1}$): 	centrifugal distortion constant\
 
-$D_O^O$ (eV): Dissociation energy
+$R_e$ (\AA): internuclear distance\
 
-$IP$ (eV): Ionozation potential
+$D_O^O$ (eV): Dissociation energy\
+
+$IP$ (eV): Ionozation potential\
 
 lan_act: Indicates the use of group 3 as the group for both lanthanides and actinides
 
