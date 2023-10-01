@@ -10,6 +10,10 @@
 
 [all_new_data.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/8fb6627a3cf221a32150bc9b43dcf659b3174bb7/data/all_new_data.csv): Conssists of all the newly gatherd data with refrences and authors' notes.
 
+
+[newest version of the data set](https://dscdm.physics.stonybrook.edu/): An up-to-date website of all our gathered diatomic spectroscopic data.
+
+
 Electronic state: electronic state and/or symmetry symbol
 
 $T_e$  (cm $^{-1}$):  minimum electronic energy
