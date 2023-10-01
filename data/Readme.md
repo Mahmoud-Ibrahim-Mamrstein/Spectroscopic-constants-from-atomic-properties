@@ -1,8 +1,12 @@
 ## Data description
-[g.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g.csv): contains data used for training and validation. References are provided for each molecule experimental data \
-[g-test-2.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g-test-2.csv): contains data used for training and validation in addition to data used for testing. \
-[g-test-2-with-refrences.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g-test-2-with-refrences.csv): contains data used for training and validation in addition to data used for testing. References are provided for each molecule experimental data \
-[list of molecules used in Xiangue and Jesus paper.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/ece9ce778381e0e7a83e75dc29c02950d5a4bd62/data/list%20of%20molecules%20used%20in%20Xiangue%20and%20Jesus%20paper.csv): A list of molecules used in Liu et al., 2021 \
+[newest version of the data set](https://dscdm.physics.stonybrook.edu/): An up-to-date website of all our gathered diatomic spectroscopic data.
+
+[data.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/24ca60f6ed3e74debb9b59300cee15af407a4252/data/data.csv): [newest version of the data set](https://dscdm.physics.stonybrook.edu/) as csv file
+
+[g.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g.csv): contains ground state spectroscopic data used for training and validation. References are provided for each molecule experimental data \
+[g-test-2.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g-test-2.csv): contains ground state spectroscopic data data used for training and validation in addition to data used for testing. \
+[g-test-2-with-refrences.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g-test-2-with-refrences.csv): contains ground state spectroscopic data used for training and validation in addition to data used for testing. References are provided for each molecule experimental data \
+[list of molecules used in Xiangue and Jesus paper.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/ece9ce778381e0e7a83e75dc29c02950d5a4bd62/data/list%20of%20molecules%20used%20in%20Xiangue%20and%20Jesus%20paper.csv): A list of molecules used in [[1]](#1) \
 [peridic.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/ece9ce778381e0e7a83e75dc29c02950d5a4bd62/data/peridic.csv): contains information from the periodic table for each element
 
 [g.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g.csv) and [g-test-2.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/b7fe30b53feceacd9d0e9ae47eeb9ef755adcce5/data/g-test-2.csv): A1 and A2 columns contain the mass number of the two atoms making up a molecule. 
@@ -11,7 +15,6 @@
 [all_new_data.csv](https://github.com/Mahmoud-Ibrahim-Mamrstein/Spectroscopic-constants-from-atomic-properties/blob/8fb6627a3cf221a32150bc9b43dcf659b3174bb7/data/all_new_data.csv): Conssists of all the newly gatherd data with refrences and authors' notes.
 
 
-[newest version of the data set](https://dscdm.physics.stonybrook.edu/): An up-to-date website of all our gathered diatomic spectroscopic data.
 
 
 Electronic state: electronic state and/or symmetry symbol
